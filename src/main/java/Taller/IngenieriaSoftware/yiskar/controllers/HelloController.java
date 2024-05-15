@@ -1,4 +1,4 @@
-package com.example.yiskar;
+package Taller.IngenieriaSoftware.yiskar.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

@@ -3,6 +3,8 @@ module com.example.yiskar {
     requires javafx.fxml;
 
 
-    opens com.example.yiskar to javafx.fxml;
-    exports com.example.yiskar;
+    opens Taller.IngenieriaSoftware.yiskar to javafx.fxml;
+    exports Taller.IngenieriaSoftware.yiskar;
+    exports Taller.IngenieriaSoftware.yiskar.controllers;
+    opens Taller.IngenieriaSoftware.yiskar.controllers to javafx.fxml;
 }
