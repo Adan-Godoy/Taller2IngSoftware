@@ -2,45 +2,52 @@ package Taller.IngenieriaSoftware.yiskar.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-
+import javafx.scene.Scene;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import java.io.IOException;
-
-public class iniciarSesionController  {
-
-    public iniciarSesionController() {
-    }
+public class registroController {
 
     private Stage stage;
     private Scene scene;
     private Parent root;
-    @FXML
-    private TextField emailIniciarSesion;
 
     @FXML
-    private PasswordField contraseñaIniciarSesion;
+    private TextField nombreTextField;
 
     @FXML
-    private Button botonIniciarSesion;
+    private TextField edadTextField;
 
     @FXML
-    private Button botonCrearCuenta;
-
+    private TextField emailTextField;
 
     @FXML
-    private void cambiarRegistro(ActionEvent event)  {
+    private PasswordField contraseñaPasswordField;
 
+    @FXML
+    private Button crearButton;
+
+    @FXML
+    private Button iniciarSesionButton;
+
+    @FXML
+    private Label mensajeLabel;
+
+    public registroController( ) {
+
+    }
+
+    @FXML
+    private void cambiarIniciarSesion(ActionEvent event) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/Taller/IngenieriaSoftware/yiskar/views/registro.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/Taller/IngenieriaSoftware/yiskar/views/iniciarSesion.fxml"));
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             Scene scene = new Scene(root);
             stage.setScene(scene);
@@ -49,8 +56,6 @@ public class iniciarSesionController  {
             e.printStackTrace();
 
         }
-
-
     }
 
 

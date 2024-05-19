@@ -1,0 +1,25 @@
+.pane {
+    -fx-background-radius: 0px 30px 30px 0px;
+    -fx-background-color:  #D6C1DE;
+}
+
+#LabelRegistro {
+    -fx-font-family: "Courier New";
+    -fx-background-color: transparent;
+    -fx-font-size: 36px;
+    -fx-font-weight: bold;
+}
+
+.label {
+    -fx-font-family: "Courier New";
+    -fx-background-color: transparent;
+    -fx-font-size: 12px;
+}
+
+.button {
+    -fx-font-family: "Courier New";
+    -fx-font-size: 12px;
+    -fx-background-radius: 30px;
+    -fx-background-color: rgba(222,222,222,0.8);
+
+}

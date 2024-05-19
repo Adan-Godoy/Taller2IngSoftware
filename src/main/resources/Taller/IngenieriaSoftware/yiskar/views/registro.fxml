@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Taller.IngenieriaSoftware.yiskar.controllers.registroController">
+   <children>
+      <Pane prefHeight="600.0" prefWidth="500.0" styleClass="pane" stylesheets="@../styles/stylesRegistro.css">
+         <children>
+            <Label id="LabelRegistro" layoutX="66.0" layoutY="109.0" stylesheets="@../styles/stylesRegistro.css" text="¡Qué bueno verte!" />
+            <Label layoutX="199.0" layoutY="153.0" styleClass="label" stylesheets="@../styles/stylesRegistro.css" text="Crea tu cuenta" />
+            <VBox layoutX="85.0" layoutY="214.0" prefHeight="280.0" prefWidth="330.0">
+               <children>
+                  <HBox prefHeight="30.0" prefWidth="200.0">
+                     <children>
+                        <ImageView fitHeight="30.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </HBox.margin>
+                           <image>
+                              <Image url="@../images/user_7817038.png" />
+                           </image></ImageView>
+                        <TextField prefHeight="30.0" prefWidth="300.0" promptText="Juan Perez" />
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox prefHeight="30.0" prefWidth="200.0">
+                     <children>
+                        <ImageView fitHeight="30.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </HBox.margin>
+                           <image>
+                              <Image url="@../images/age_5660247.png" />
+                           </image></ImageView>
+                        <TextField prefHeight="30.0" prefWidth="300.0" promptText="18" />
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox prefHeight="30.0" prefWidth="200.0">
+                     <children>
+                        <ImageView fitHeight="30.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </HBox.margin>
+                           <image>
+                              <Image url="@../images/envelope_5287325.png" />
+                           </image></ImageView>
+                        <TextField prefHeight="30.0" prefWidth="300.0" promptText="example@gmail.com" />
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox prefHeight="30.0" prefWidth="200.0">
+                     <children>
+                        <ImageView fitHeight="30.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </HBox.margin>
+                           <image>
+                              <Image url="@../images/padlock_4686837.png" />
+                           </image></ImageView>
+                        <PasswordField prefHeight="30.0" prefWidth="300.0" promptText="Contraseña" />
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="150.0" stylesheets="@../styles/stylesRegistro.css" text="Crear">
+                     <VBox.margin>
+                        <Insets left="90.0" right="90.0" top="50.0" />
+                     </VBox.margin></Button>
+               </children>
+            </VBox>
+         </children></Pane>
+      <VBox layoutX="609.0" layoutY="102.0" prefHeight="200.0" prefWidth="300.0">
+         <children>
+            <Label id="LabelRegistro" alignment="CENTER" prefHeight="40.0" prefWidth="300.0" stylesheets="@../styles/stylesRegistro.css" text="Bienvenido a" />
+            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/Yiskar_logo-removebg-preview.png" />
+               </image>
+               <VBox.margin>
+                  <Insets left="70.0" right="70.0" top="25.0" />
+               </VBox.margin>
+            </ImageView>
+         </children>
+      </VBox>
+      <Label layoutX="680.0" layoutY="387.0" stylesheets="@../styles/stylesRegistro.css" text="¿Ya tienes una cuenta?" />
+      <Button layoutX="684.0" layoutY="465.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="150.0" onAction="#cambiarIniciarSesion" stylesheets="@../styles/stylesRegistro.css" text="Iniciar Sesion" />
+   </children>
+</AnchorPane>
