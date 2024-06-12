@@ -8,5 +8,8 @@ Lucía Vázquez,30,lucia.vazquez@example.com,lvazquez654
 Roberto Santos,43,roberto.santos@example.com,rsantos987
 Camila Navarro,26,camila.navarro@example.com,cnavarro432
 Fernando Ríos,39,fernando.rios@example.com,frios876
-Isabel Romero,31,isabel.romero@example.com,iromero543adasd,18,asdsad@gmail.com,adan
+Isabel Romero,31,isabel.romero@example.com,iromero543
 adan,18,aasda@gmail.com,adan
+Francisco Llanos,24,francisco.llanos@gmail.com,lalala123
+Juanito perez,33,juanito@gmail.com,colocolo
+juan,33,aa@example.com,lalala
