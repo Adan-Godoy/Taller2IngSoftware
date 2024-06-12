@@ -1,4 +1,4 @@
-package Taller.IngenieriaSoftware.yiskar.models;
+package Taller.IngenieriaSoftware.yiskar.entities;
 
 public class Cliente extends Persona {
 

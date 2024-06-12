@@ -1,6 +1,8 @@
 module com.example.yiskar {
     requires javafx.controls;
     requires javafx.fxml;
+    requires java.net.http;
+    requires com.google.gson;
 
 
     opens Taller.IngenieriaSoftware.yiskar to javafx.fxml;

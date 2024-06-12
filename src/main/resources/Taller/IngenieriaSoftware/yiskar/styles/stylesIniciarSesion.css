@@ -15,7 +15,7 @@
     -fx-font-family: "Courier New";
     -fx-font-size: 12px;
     -fx-background-radius: 30px;
-    -fx-background-color: rgba(208, 193, 222,0.8);
+    -fx-background-color: rgba(169, 216, 228, 0.7);
 }
 
 .text-field {
@@ -35,7 +35,7 @@
     -fx-font-family: "Courier New";
     -fx-font-size: 12px;
     -fx-background-radius: 30px;
-    -fx-background-color: rgba(222,222,222,0.8);
+    -fx-background-color: rgba(169, 216, 228, 0.7);
 
 }
 
