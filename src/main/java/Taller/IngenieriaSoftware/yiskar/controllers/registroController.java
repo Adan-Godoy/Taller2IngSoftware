@@ -1,19 +1,18 @@
 package Taller.IngenieriaSoftware.yiskar.controllers;
 
+import java.io.*;
+
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import java.io.IOException;
+
 import java.time.Duration;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -74,51 +73,73 @@ public class registroController {
     }
 
     @FXML
-    private void registrarUsuario(ActionEvent event)
-    {
-
-        if(nombreTextField.getText().isEmpty())
-        {
+    private void registrarUsuario(ActionEvent event) {
+        if (nombreTextField.getText().isEmpty()) {
             mostrarError("Debe completar el campo nombre.");
             return;
         }
-        if(edadTextField.getText().isEmpty())
-        {
+        if (edadTextField.getText().isEmpty()) {
             mostrarError("Debe completar el campo edad.");
             return;
-        }else
-        {
-            try
-            {
+        } else {
+            try {
                 int edad = Integer.parseInt(edadTextField.getText());
-                if(edad < 18 || edad > 65)
-                {
+                if (edad < 18 || edad > 65) {
                     mostrarError("La edad no puede ser inferior a 18 y mayor a 65.");
                     return;
                 }
-            }
-            catch(Exception e)
-            {
+            } catch (Exception e) {
                 mostrarError("La edad debe ser numérica.");
                 return;
             }
         }
-        if(emailTextField.getText().isEmpty())
-        {
+        if (emailTextField.getText().isEmpty()) {
             mostrarError("Debe completar el campo correo electrónico.");
             return;
+        } else {
+            String correo = emailTextField.getText();
+            if (correoExistente(correo)) {
+                mostrarError("El correo electrónico ingresado ya existe en el sistema.");
+                return;
+            }
+            validarCorreo(correo);
+            if (errorTexto.isVisible()) {
+                return;
+            }
         }
-        else
-        {
-            validarCorreo(emailTextField.getText());
-        }
-        if(PasswordField.getText().isEmpty())
-        {
+        if (PasswordField.getText().isEmpty()) {
             mostrarError("Debe completar el campo contraseña.");
+            return;
         }
-        else
-        {
+        if (!PasswordField.getText().equals(RepeatPasswordField.getText())) {
+            mostrarError("Las contraseñas deben coincidir.");
+            return;
+        }
 
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\Users\\Adán Godoy\\IdeaProjects\\Yiskar\\src\\main\\resources\\Taller\\IngenieriaSoftware\\yiskar\\Data\\Cliente.txt", true))) {
+
+            writer.write(String.format("%s,%s,%s,%s%n", nombreTextField.getText(), edadTextField.getText(),
+                    emailTextField.getText(), PasswordField.getText()));
+            writer.flush();
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Registro exitoso");
+            alert.setHeaderText(null);
+            alert.setContentText("Usuario registrado con éxito.");
+            alert.showAndWait();
+
+            nombreTextField.clear();
+            edadTextField.clear();
+            emailTextField.clear();
+            PasswordField.clear();
+            RepeatPasswordField.clear();
+            errorTexto.setText("");
+
+            System.out.println("Usuario registrado con éxito.");
+        } catch (IOException e) {
+
+            errorTexto.setText("Hubo un error al guardar el usuario. Inténtelo de nuevo.");
+            e.printStackTrace();
         }
     }
 
@@ -148,17 +169,19 @@ public class registroController {
         }
     }
 
-    @FXML
-    private void verificarContraseniasCoiniciden(KeyEvent event)
-    {
-        Object evt = event.getSource();
-        if(evt.equals(RepeatPasswordField))
-        {
-            if(!RepeatPasswordField.getText().equals(PasswordField.getText()))
-            {
-                mostrarError("Las contraseñas deben coincidir.");
-            }
-        }
 
+    private boolean correoExistente(String correo) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\Adán Godoy\\IdeaProjects\\Yiskar\\src\\main\\resources\\Taller\\IngenieriaSoftware\\yiskar\\Data\\Cliente.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] datos = line.split(",");
+                if (datos.length > 2 && datos[2].equals(correo)) {
+                    return true;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

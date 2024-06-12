@@ -1,0 +1,12 @@
+nombre,edad,correo_electronico,contraseña
+Gabriel Hernández,28,gabriel.hernandez@example.com,ghernandez123
+Valeria Mendoza,35,valeria.mendoza@example.com,vmendoza2021
+Andrés Castillo,40,andres.castillo@example.com,acastillo456
+Paula Reyes,32,paula.reyes@example.com,preyes789
+Diego Ortiz,27,diego.ortiz@example.com,dortiz321
+Lucía Vázquez,30,lucia.vazquez@example.com,lvazquez654
+Roberto Santos,43,roberto.santos@example.com,rsantos987
+Camila Navarro,26,camila.navarro@example.com,cnavarro432
+Fernando Ríos,39,fernando.rios@example.com,frios876
+Isabel Romero,31,isabel.romero@example.com,iromero543adasd,18,asdsad@gmail.com,adan
+adan,18,aasda@gmail.com,adan

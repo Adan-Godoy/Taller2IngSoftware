@@ -1,0 +1,11 @@
+nombre,edad,correo_electronico,contraseña
+Juan Pérez,45,juan.perez@example.com,jperez123
+María García,38,maria.garcia@example.com,mg1234
+Carlos Ruiz,50,carlos.ruiz@example.com,cruiz2024
+Ana López,33,ana.lopez@example.com,alopez5678
+Luis Torres,42,luis.torres@example.com,ltorres2023
+Elena Morales,37,elena.morales@example.com,emorales789
+Ricardo Fernández,46,ricardo.fernandez@example.com,rfernandez321
+Sofía Martínez,29,sofia.martinez@example.com,smartinez654
+Miguel Ramírez,41,miguel.ramirez@example.com,mramirez987
+Laura González,34,laura.gonzalez@example.com,lgonzalez4321
