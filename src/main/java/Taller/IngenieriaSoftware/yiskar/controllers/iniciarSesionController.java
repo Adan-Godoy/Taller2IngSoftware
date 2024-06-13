@@ -13,7 +13,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-
+import javafx.scene.control.Alert;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -55,8 +55,18 @@ public class iniciarSesionController  {
     }
 
     @FXML
-    private void botonIniciarSesion(ActionEvent event) {
+    private void IniciarSesion(ActionEvent event) {
 
+        if(emailIniciarSesion.getText().isEmpty())
+        {
+            alerta("Debe ingresar su email para iniciar sesión.");
+            return;
+        }
+        if(contraseñaIniciarSesion.getText().isEmpty())
+        {
+            alerta("Debe ingresar su contraseña para iniciar sesión.");
+            return;
+        }
         if (cuentaExistente(emailIniciarSesion.getText(),contraseñaIniciarSesion.getText())){
             try {
                 Parent root = FXMLLoader.load(getClass().getResource("/Taller/IngenieriaSoftware/yiskar/views/administrarServicios.fxml"));
@@ -69,13 +79,7 @@ public class iniciarSesionController  {
 
             }
         } else {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("No es posible iniciar sesion");
-            alert.setHeaderText(null);
-            alert.setContentText("Usuario no se encuentra registrado");
-            alert.showAndWait();
-
-            System.out.println("Usuario no se encuentra registrado");
+            alerta("Usuario no se encuentra registrado");
         }
 
     }
@@ -93,6 +97,15 @@ public class iniciarSesionController  {
             e.printStackTrace();
         }
         return false;
+    }
+
+    private void alerta(String msg)
+    {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("No es posible iniciar sesión");
+        alert.setHeaderText(null);
+        alert.setContentText((msg));
+        alert.showAndWait();
     }
 
 

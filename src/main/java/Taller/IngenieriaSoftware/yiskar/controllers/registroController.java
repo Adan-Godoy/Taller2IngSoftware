@@ -113,13 +113,11 @@ public class registroController {
             return;
         }
         if (!PasswordField.getText().equals(RepeatPasswordField.getText())) {
-            mostrarError("Las contraseñas deben coincidir.");
+            mostrarError("Las contraseñas ingresadas no coinciden.");
             return;
         }
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(System.getProperty("user.dir") + "\\src\\main\\resources\\Taller\\IngenieriaSoftware\\yiskar\\Data\\Cliente.txt", true))) {
-            //Aqui guarda tu dirección de archivo: C:\Users\fran_\Documents\Ingenieria en Software\Taller 2\Taller2IngSoftware\src\main\resources\Taller\IngenieriaSoftware\yiskar\Data\Cliente.txt
-            //Aqui guarda tu direccion de archivo: C:\Users\Adán Godoy\IdeaProjects\Yiskar\src\main\resources\Taller\IngenieriaSoftware\yiskar\Data\Cliente.txt
             writer.write(String.format("%s,%s,%s,%s%n", nombreTextField.getText(), edadTextField.getText(),
                     emailTextField.getText(), PasswordField.getText()));
             writer.flush();
@@ -178,8 +176,6 @@ public class registroController {
 
     private boolean correoExistente(String correo) {
         try (BufferedReader reader = new BufferedReader(new FileReader(System.getProperty("user.dir") + "\\src\\main\\resources\\Taller\\IngenieriaSoftware\\yiskar\\Data\\Cliente.txt"))) {
-            //Aqui guarda tu dirección de archivo: C:\Users\fran_\Documents\Ingenieria en Software\Taller 2\Taller2IngSoftware\src\main\resources\Taller\IngenieriaSoftware\yiskar\Data\Cliente.txt
-            //Aqui guarda tu direccion de archivo: C:\Users\Adán Godoy\IdeaProjects\Yiskar\src\main\resources\Taller\IngenieriaSoftware\yiskar\Data\Cliente.txt
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] datos = line.split(",");
