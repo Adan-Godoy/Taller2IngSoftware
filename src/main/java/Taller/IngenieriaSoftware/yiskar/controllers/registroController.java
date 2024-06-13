@@ -1,6 +1,9 @@
 package Taller.IngenieriaSoftware.yiskar.controllers;
 
 import java.io.*;
+
+import Taller.IngenieriaSoftware.yiskar.repository.PersonaRepository;
+import Taller.IngenieriaSoftware.yiskar.util.AlertBox;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -77,6 +80,7 @@ public class registroController {
     private void registrarUsuario(ActionEvent event) {
         if (nombreTextField.getText().isEmpty()) {
             mostrarError("Debe completar el campo nombre.");
+
             return;
         }
         if (edadTextField.getText().isEmpty()) {
@@ -87,10 +91,12 @@ public class registroController {
                 int edad = Integer.parseInt(edadTextField.getText());
                 if (edad < 18 || edad > 65) {
                     mostrarError("La edad no puede ser inferior a 18 y mayor a 65.");
+                    edadTextField.clear();
                     return;
                 }
             } catch (Exception e) {
                 mostrarError("La edad debe ser numérica.");
+                edadTextField.clear();
                 return;
             }
         }
@@ -117,16 +123,10 @@ public class registroController {
             return;
         }
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(System.getProperty("user.dir") + "\\src\\main\\resources\\Taller\\IngenieriaSoftware\\yiskar\\Data\\Cliente.txt", true))) {
-            writer.write(String.format("%s,%s,%s,%s%n", nombreTextField.getText(), edadTextField.getText(),
-                    emailTextField.getText(), PasswordField.getText()));
-            writer.flush();
-
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Registro exitoso");
-            alert.setHeaderText(null);
-            alert.setContentText("Usuario registrado con éxito.");
-            alert.showAndWait();
+        PersonaRepository personaRepository = PersonaRepository.getInstance();
+        if(personaRepository.registrarCliente(nombreTextField.getText(),edadTextField.getText(),emailTextField.getText(),PasswordField.getText()))
+        {
+            AlertBox.mostrarError("usuario registrado con éxito.", "Registro existoso", Alert.AlertType.CONFIRMATION);
 
             nombreTextField.clear();
             edadTextField.clear();
@@ -134,12 +134,11 @@ public class registroController {
             PasswordField.clear();
             RepeatPasswordField.clear();
             errorTexto.setText("");
-
-            System.out.println("Usuario registrado con éxito.");
-        } catch (IOException e) {
-
-            errorTexto.setText("Hubo un error al guardar el usuario. Inténtelo de nuevo.");
-            e.printStackTrace();
+        }
+        else
+        {
+            AlertBox.mostrarError("Intente nuevamente con otro correo.", "Registro", Alert.AlertType.WARNING);
+            emailTextField.clear();
         }
     }
 

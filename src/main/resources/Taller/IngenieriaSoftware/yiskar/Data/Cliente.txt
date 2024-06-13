@@ -1,15 +1,12 @@
-Gabriel Hernández,28,gabriel.hernandez@example.com,ghernandez123
-Valeria Mendoza,35,valeria.mendoza@example.com,vmendoza2021
-Andrés Castillo,40,andres.castillo@example.com,acastillo456
-Paula Reyes,32,paula.reyes@example.com,preyes789
-Diego Ortiz,27,diego.ortiz@example.com,dortiz321
-Lucía Vázquez,30,lucia.vazquez@example.com,lvazquez654
-Roberto Santos,43,roberto.santos@example.com,rsantos987
-Camila Navarro,26,camila.navarro@example.com,cnavarro432
-Fernando Ríos,39,fernando.rios@example.com,frios876
-Isabel Romero,31,isabel.romero@example.com,iromero543
-adan,18,aasda@gmail.com,adan
-Francisco Llanos,24,francisco.llanos@gmail.com,lalala123
-Juanito perez,33,juanito@gmail.com,colocolo
-juan,33,aa@example.com,lalala
-asdsadas,20,asdasd@gmail.com,123
+Gabriel Hernández,28,gabriel.hernandez@example.com,ghernandez123,30000
+Valeria Mendoza,35,valeria.mendoza@example.com,vmendoza2021,5053
+Andrés Castillo,40,andres.castillo@example.com,acastillo456,32581
+Paula Reyes,32,paula.reyes@example.com,preyes789,1250
+Diego Ortiz,27,diego.ortiz@example.com,dortiz321,69852
+Lucía Vázquez,30,lucia.vazquez@example.com,lvazquez654,7575
+Roberto Santos,43,roberto.santos@example.com,rsantos987,7996
+Camila Navarro,26,camila.navarro@example.com,cnavarro432,15881
+Fernando Ríos,39,fernando.rios@example.com,frios876,36852
+Isabel Romero,31,isabel.romero@example.com,iromero543,95512
+Juanito perez,33,juanito@gmail.com,colocolo,100000
+juan,33,juanbkn@example.com,lalala,56566
