@@ -1,0 +1,29 @@
+.column-cell {
+    -fx-background-color: #D6C1DE;
+    -fx-text-fill: black;
+}
+
+.labelComprarGiftCard {
+    -fx-font-family: "Courier New";
+    -fx-background-color: transparent;
+    -fx-font-size: 30px;
+    -fx-font-weight: bold;
+}
+
+.label{
+    -fx-font-family: "Courier New";
+    -fx-background-color: transparent;
+    -fx-font-size: 24px;
+
+}
+
+.button {
+    -fx-font-family: "Courier New";
+    -fx-font-size: 12px;
+    -fx-background-radius: 30px;
+    -fx-background-color: rgba(169, 216, 228, 0.7);
+}
+
+.anchorPane {
+    -fx-background-color: rgba(247, 195, 182, 0.2);
+}

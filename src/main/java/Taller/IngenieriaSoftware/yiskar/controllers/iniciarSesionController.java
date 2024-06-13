@@ -1,5 +1,6 @@
 package Taller.IngenieriaSoftware.yiskar.controllers;
 
+import Taller.IngenieriaSoftware.yiskar.services.ApiService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,6 +19,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+
 public class iniciarSesionController  {
 
     public iniciarSesionController() {
@@ -26,6 +28,8 @@ public class iniciarSesionController  {
     private Stage stage;
     private Scene scene;
     private Parent root;
+
+
     @FXML
     private TextField emailIniciarSesion;
 
@@ -68,8 +72,17 @@ public class iniciarSesionController  {
             return;
         }
         if (cuentaExistente(emailIniciarSesion.getText(),contraseñaIniciarSesion.getText())){
+            ApiService apiService = ApiService.getInstance();
             try {
-                Parent root = FXMLLoader.load(getClass().getResource("/Taller/IngenieriaSoftware/yiskar/views/administrarServicios.fxml"));
+                apiService.login("agodoy22", "901567");
+
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            try {
+                Parent root = FXMLLoader.load(getClass().getResource("/Taller/IngenieriaSoftware/yiskar/views/comprarGiftCard.fxml"));
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 Scene scene = new Scene(root);
                 stage.setScene(scene);
@@ -107,6 +120,5 @@ public class iniciarSesionController  {
         alert.setContentText((msg));
         alert.showAndWait();
     }
-
 
 }
