@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="600.0" prefWidth="1000.0" styleClass="anchorPane" stylesheets="@../styles/stylesAdministrarServicios.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Taller.IngenieriaSoftware.yiskar.controllers.administrarServiciosController">
+    <children>
+      <TableView fx:id="TablaServicios" layoutX="370.0" layoutY="143.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="143.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="143.0">
+        <columns>
+          <TableColumn fx:id="colNombre" maxWidth="400.0" minWidth="400.0" prefWidth="400.0" styleClass="" text="Nombre" />
+          <TableColumn fx:id="colPrecio" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" styleClass="" text="Precio (CLP)" />
+        </columns>
+      </TableView>
+      <Label layoutX="301.0" layoutY="55.0" prefHeight="59.0" prefWidth="400.0" styleClass="LabelAdministrarServicios" stylesheets="@../styles/stylesAdministrarServicios.css" text="Administrar Servicios" textAlignment="CENTER">
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding></Label>
+      <VBox layoutX="92.0" layoutY="195.0" prefHeight="210.0" prefWidth="190.0">
+         <children>
+            <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="150.0" stylesheets="@../styles/stylesAdministrarServicios.css" onAction="#agregarServicio" text="Agregar Servicio">
+               <VBox.margin>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </VBox.margin>
+            </Button>
+            <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="150.0" onAction="#modificarServicio" text="Modificar Servicio">
+               <VBox.margin>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </VBox.margin>
+            </Button>
+            <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="150.0" onAction="#eliminarServicio" text="Eliminar Servicio">
+               <VBox.margin>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </VBox.margin>
+            </Button>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

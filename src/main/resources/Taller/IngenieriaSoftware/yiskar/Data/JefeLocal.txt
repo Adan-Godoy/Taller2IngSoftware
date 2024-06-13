@@ -1,4 +1,3 @@
-nombre,edad,correo_electronico,contraseña
 Juan Pérez,45,juan.perez@example.com,jperez123
 María García,38,maria.garcia@example.com,mg1234
 Carlos Ruiz,50,carlos.ruiz@example.com,cruiz2024

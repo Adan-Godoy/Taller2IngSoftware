@@ -1,7 +1,6 @@
 package Taller.IngenieriaSoftware.yiskar.controllers;
 
 import java.io.*;
-
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 
+import java.nio.charset.StandardCharsets;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.animation.KeyFrame;
@@ -117,7 +117,7 @@ public class registroController {
             return;
         }
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\Users\\fran_\\Documents\\Ingenieria en Software\\Taller 2\\Taller2IngSoftware\\src\\main\\resources\\Taller\\IngenieriaSoftware\\yiskar\\Data\\Cliente.txt", true))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(System.getProperty("user.dir") + "\\src\\main\\resources\\Taller\\IngenieriaSoftware\\yiskar\\Data\\Cliente.txt", true))) {
             //Aqui guarda tu dirección de archivo: C:\Users\fran_\Documents\Ingenieria en Software\Taller 2\Taller2IngSoftware\src\main\resources\Taller\IngenieriaSoftware\yiskar\Data\Cliente.txt
             //Aqui guarda tu direccion de archivo: C:\Users\Adán Godoy\IdeaProjects\Yiskar\src\main\resources\Taller\IngenieriaSoftware\yiskar\Data\Cliente.txt
             writer.write(String.format("%s,%s,%s,%s%n", nombreTextField.getText(), edadTextField.getText(),
@@ -177,7 +177,7 @@ public class registroController {
 
 
     private boolean correoExistente(String correo) {
-        try (BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\fran_\\Documents\\Ingenieria en Software\\Taller 2\\Taller2IngSoftware\\src\\main\\resources\\Taller\\IngenieriaSoftware\\yiskar\\Data\\Cliente.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(System.getProperty("user.dir") + "\\src\\main\\resources\\Taller\\IngenieriaSoftware\\yiskar\\Data\\Cliente.txt"))) {
             //Aqui guarda tu dirección de archivo: C:\Users\fran_\Documents\Ingenieria en Software\Taller 2\Taller2IngSoftware\src\main\resources\Taller\IngenieriaSoftware\yiskar\Data\Cliente.txt
             //Aqui guarda tu direccion de archivo: C:\Users\Adán Godoy\IdeaProjects\Yiskar\src\main\resources\Taller\IngenieriaSoftware\yiskar\Data\Cliente.txt
             String line;

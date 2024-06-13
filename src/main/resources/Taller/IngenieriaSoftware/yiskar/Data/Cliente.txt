@@ -1,4 +1,3 @@
-nombre,edad,correo_electronico,contraseña
 Gabriel Hernández,28,gabriel.hernandez@example.com,ghernandez123
 Valeria Mendoza,35,valeria.mendoza@example.com,vmendoza2021
 Andrés Castillo,40,andres.castillo@example.com,acastillo456
@@ -13,3 +12,4 @@ adan,18,aasda@gmail.com,adan
 Francisco Llanos,24,francisco.llanos@gmail.com,lalala123
 Juanito perez,33,juanito@gmail.com,colocolo
 juan,33,aa@example.com,lalala
+asdsadas,20,asdasd@gmail.com,123
