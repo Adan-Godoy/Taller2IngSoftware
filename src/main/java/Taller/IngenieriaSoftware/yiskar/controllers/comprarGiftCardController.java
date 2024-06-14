@@ -12,12 +12,22 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.time.LocalDate;
+import java.util.Locale;
+import java.util.Random;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 
 public class comprarGiftCardController{
 
@@ -75,10 +85,11 @@ public class comprarGiftCardController{
     private void cargarServicio() {
         listaServicioDisp.clear();
 
+
         ServiciosRepository serviciosRepository = ServiciosRepository.getInstancia();
         Servicio[] servicios = serviciosRepository.obtenerServicios();
         if (servicios == null) {
-            AlertBox.mostrarError("No hay servicios registrados", "No hay datos", Alert.AlertType.WARNING);
+            AlertBox.mostrarError("Por el momento no es posible la compra de tarjeta de regalos. Intente más tarde.", "No hay servicios", Alert.AlertType.WARNING);
             return;
         }
         for (Servicio servicio : servicios) {
@@ -169,6 +180,13 @@ public class comprarGiftCardController{
 
         if (pago.realizarPago())
         {
+            Servicio[] comprados = new Servicio[listaServicioAgre.size()-1];
+            for(int i=0;i<listaServicioAgre.size()-1;i++)
+            {
+                comprados[i] = listaServicioAgre.get(i);
+            }
+
+            generarGiftCard(comprados);
             // Si el cargo se realiza con éxito, limpiar la lista de servicios agregados
             listaServicioAgre.clear();
 
@@ -212,6 +230,13 @@ public class comprarGiftCardController{
         PagarPuntosService pagarPuntosService = new PagarPuntosService(montoTotal);
         if(pagarPuntosService.realizarPago())
         {
+            Servicio[] comprados = new Servicio[listaServicioAgre.size()-1];
+            for(int i=0;i<listaServicioAgre.size()-1;i++)
+            {
+                comprados[i] = listaServicioAgre.get(i);
+            }
+
+            generarGiftCard(comprados);
             // Si el cargo se realiza con éxito, limpiar la lista de servicios agregados
             listaServicioAgre.clear();
 
@@ -230,6 +255,58 @@ public class comprarGiftCardController{
         }
 
 
+    }
+
+    /**
+     * Método que genera una giftcard y la muestra por pantalla con los detalles solicitados en la ERS.
+     * @param servicios servicios asociados a la giftcard.
+     */
+    private void generarGiftCard(Servicio[] servicios)
+    {
+        VBox vbox = new VBox(10);
+
+        //Generar el código de la giftcard.
+        Random random = new Random();
+        StringBuilder codigo = new StringBuilder();
+
+        // Generar el primer dígito.
+        int primerDigito = random.nextInt(9) + 1;
+        codigo.append(primerDigito);
+
+        // Generar los siete dígitos restantes.
+        for (int i = 0; i < 7; i++) {
+            int digito = random.nextInt(10);
+            codigo.append(digito);
+        }
+        Label labelCodigo = new Label("Código de la giftcard: " + codigo);
+
+        //Fecha y hora de la compra de la giftCard
+        LocalDateTime fechaActual = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        String fechaHoraCompraStr = fechaActual.format(formatter);
+        Label labelFechaHoraCompra = new Label("Fecha y hora de la compra: " + fechaHoraCompraStr);
+
+        //Servicios asociados.
+        Label labelServicios = new Label("Detalle de los servicios asociados:");
+        TextArea textAreaServicios = new TextArea();
+        textAreaServicios.setEditable(false);
+        for (Servicio servicio : servicios) {
+            textAreaServicios.appendText(servicio.getNombre() + "\n");
+        }
+
+        //Fecha de vencimiento.
+        LocalDate fechaVenc = LocalDate.now().plusMonths(6);
+        DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String fechaVencimientoStr = fechaVenc.format(formatter2);
+        Label labelFechaVencimiento = new Label("Fecha de vencimiento: " + fechaVencimientoStr);
+
+        //Generar ventana de comprobante.
+        vbox.getChildren().addAll(labelCodigo, labelFechaHoraCompra, labelServicios, textAreaServicios, labelFechaVencimiento);
+        Scene scene = new Scene(vbox, 400, 300);
+        Stage primaryStage = new Stage();
+        primaryStage.setTitle("Comprobante de Gift Card");
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 
 }
