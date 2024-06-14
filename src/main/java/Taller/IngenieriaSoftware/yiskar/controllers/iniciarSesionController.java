@@ -76,7 +76,7 @@ public class iniciarSesionController
         if (respRepository!=null){
             ApiService apiService = ApiService.getInstance();
             try {
-                apiService.login("agodoy22", "901567");
+                apiService.login("fllanos21", "678234");
 
             } catch (IOException | InterruptedException e) {
                 throw new RuntimeException(e);
@@ -97,7 +97,7 @@ public class iniciarSesionController
             else
             {
                 try {
-                    Parent root = FXMLLoader.load(getClass().getResource("/Taller/IngenieriaSoftware/yiskar/views/aministrarServicios.fxml"));
+                    Parent root = FXMLLoader.load(getClass().getResource("/Taller/IngenieriaSoftware/yiskar/views/administrarServicios.fxml"));
                     Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                     Scene scene = new Scene(root);
                     stage.setScene(scene);

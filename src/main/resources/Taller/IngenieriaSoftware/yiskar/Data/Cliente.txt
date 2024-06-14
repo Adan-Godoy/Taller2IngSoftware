@@ -10,3 +10,4 @@ Fernando Ríos,39,fernando.rios@example.com,frios876,36852
 Isabel Romero,31,isabel.romero@example.com,iromero543,95512
 Juanito perez,33,juanito@gmail.com,colocolo,100000
 juan,33,juanbkn@example.com,lalala,56566
+Pedro Pascal,44,Pedro@gmail.com,pedrito3112,0

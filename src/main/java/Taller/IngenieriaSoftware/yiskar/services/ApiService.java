@@ -130,7 +130,7 @@ public class ApiService {
         String mensaje = responseBodyJson.get("msg").getAsString();
 
         if (response.statusCode() == 200) {
-            return mensaje.equals("Cargo realizado con éxito");
+            return mensaje.equals("Cargo realizado exitosamente");
         } else {
             throw new IOException(mensaje);
         }

@@ -172,19 +172,19 @@ public class PersonaRepository {
         return null;
     }
 
-    public static boolean registrarCliente(String nombre, String edad, String correo, String contrasenia)
+    public boolean registrarCliente(String nombre, String edad, String correo, String contrasenia)
     {
-        for(int i=0;i<personaRepository.cantidadClientes;i++)
+        for(int i=0;i<cantidadClientes;i++)
         {
-            if(personaRepository.clientes[i].getEmail().equals(correo))
+            if(clientes[i].getEmail().equals(correo))
             {
                 AlertBox.mostrarError("El correo electrónico ingresado ya existe en el sistema","Error", Alert.AlertType.ERROR);
                 return false;
             }
         }
-        for(int i=0;i<personaRepository.cantidadClientes;i++)
+        for(int i=0;i<cantidadClientes;i++)
         {
-            if(personaRepository.jefes[i].getEmail().equals(correo))
+            if(jefes[i].getEmail().equals(correo))
             {
                 AlertBox.mostrarError("El correo electrónico ingresado ya existe en el sistema","Error", Alert.AlertType.ERROR);
                 return false;
@@ -199,11 +199,11 @@ public class PersonaRepository {
             e.printStackTrace();
             return false;
         }
-        personaRepository.clientes[personaRepository.cantidadClientes] = cliente;
-        personaRepository.cantidadClientes = personaRepository.cantidadClientes+1;
-        if(personaRepository.cantidadClientes == personaRepository.espacioMaxClientes)
+        clientes[cantidadClientes] = cliente;
+        cantidadClientes = cantidadClientes+1;
+        if(cantidadClientes == espacioMaxClientes)
         {
-            personaRepository.expandirEspacio(true);
+            expandirEspacio(true);
         }
         return true;
     }
