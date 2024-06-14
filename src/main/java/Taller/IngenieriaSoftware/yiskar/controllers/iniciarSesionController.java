@@ -20,16 +20,6 @@ import java.io.IOException;
 
 public class iniciarSesionController
 {
-    public iniciarSesionController()
-    {
-
-    }
-
-    private Stage stage;
-    private Scene scene;
-    private Parent root;
-
-
     @FXML
     private TextField emailIniciarSesion;
 
@@ -42,7 +32,10 @@ public class iniciarSesionController
     @FXML
     private Button botonCrearCuenta;
 
-
+    /**
+     * Método que inicia la ventana de iniciar sesión.
+     * @param event Detecta una interacción del usuario con la interfaz.
+     */
     @FXML
     private void cambiarRegistro(ActionEvent event)  {
 
@@ -58,6 +51,10 @@ public class iniciarSesionController
         }
     }
 
+    /**
+     * Método que permite al usuario iniciar sesión en el sistema y dependiendo de su rol, abre la ventana correspondiente al usuario.
+     * @param event Detecta una interacción del usuario con la interfaz.
+     */
     @FXML
     private void IniciarSesion(ActionEvent event) {
 
@@ -111,6 +108,5 @@ public class iniciarSesionController
             AlertBox.mostrarError("Usuario no registrado o contraseña incorrecta.", "Login fallido", Alert.AlertType.ERROR);
         }
     }
-
 
 }

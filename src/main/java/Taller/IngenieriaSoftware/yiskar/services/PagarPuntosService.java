@@ -10,8 +10,19 @@ import javafx.scene.control.Alert;
 
 public class PagarPuntosService implements IPagarService
 {
+    /**
+     * Variable que almacena el monto total de la venta.
+     */
     private float montoTotal;
+    /**
+     * Variable que almacena los puntos del cliente.
+     */
     private int puntosCliente;
+
+    /**
+     * Metodo constructor de la clase.
+     * @param montoTotal monto total de la venta.
+     */
     public PagarPuntosService(float montoTotal)
     {
         ClienteAutenticado clienteAutenticado = ClienteAutenticado.getInstancia();
@@ -36,6 +47,10 @@ public class PagarPuntosService implements IPagarService
         return true;
     }
 
+    /**
+     * Método que retorna los puntos del cliente almacenados en la clase.
+     * @return Puntos del cliente.
+     */
     public int obtenerPuntos(){return puntosCliente;}
 
 

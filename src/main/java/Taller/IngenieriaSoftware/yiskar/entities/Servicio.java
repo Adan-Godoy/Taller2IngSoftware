@@ -4,28 +4,55 @@ import java.util.Objects;
 
 public class Servicio {
 
+    /**
+     * Nombre del servicio.
+     */
     private String nombre;
+    /**
+     * Precio del servicio.
+     */
     private int precio;
 
 
+    /**
+     * Metodo constructor del objeto servicio.
+     * @param nombre Nombre del servicio.
+     * @param precio Precio del servicio.
+     */
     public Servicio(String nombre, int precio) {
         this.nombre = nombre;
         this.precio = precio;
 
     }
 
+    /**
+     * Metodo que retorna el nombre del servicio.
+     * @return Nombre del servicio.
+     */
     public String getNombre() {
         return nombre;
     }
 
+    /**
+     * Metodo que modifica el nombre del servicio.
+     * @param nombre Nuevo nombre del servicio.
+     */
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
+    /**
+     * Metodo que retorna el precio del servicio.
+     * @return Precio del servicio.
+     */
     public int getPrecio() {
         return precio;
     }
 
+    /**
+     * Metodo que modifica el precio del servicio.
+     * @param precio Nuevo precio del servicio.
+     */
     public void setPrecio(int precio) {
         this.precio = precio;
     }

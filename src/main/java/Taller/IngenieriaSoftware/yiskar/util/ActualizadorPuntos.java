@@ -7,6 +7,9 @@ import java.util.*;
 
 public class ActualizadorPuntos implements IActualizadorPuntos
 {
+    /**
+     * Variable que almacena los observers a actualizar.
+     */
     Set<IObserver> observerSet = new HashSet<>();
     @Override
     public void addObserver(IObserver o)

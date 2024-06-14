@@ -9,15 +9,30 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 public class ApiService {
+    /**
+     * Instancia de la clase.
+     */
     private static ApiService instance;
+    /**
+     * Variable que almacena el token del usuario logueado.
+     */
     private String token;
 
+    /**
+     * Variable que almacena la URL de la API.
+     */
     private static final String BASE_URL = "https://idonosob.pythonanywhere.com";
 
-    // Constructor privado para evitar instanciación directa
+    /**
+     * Método constructor de la clase.
+     */
     private ApiService() {
     }
 
+    /**
+     * Método que retorna la instancia de la clase, si es null, la crea y la retorna.
+     * @return Instancia de la clase.
+     */
     public static synchronized ApiService getInstance() {
         if (instance == null) {
             instance = new ApiService();
@@ -25,6 +40,13 @@ public class ApiService {
         return instance;
     }
 
+    /**
+     * Método que permite iniciar sesión en la API.
+     * @param username Username del usuario.
+     * @param password Contraseña del usuario.
+     * @throws IOException Si huoo un error con la autentificación.
+     * @throws InterruptedException Si huoo un error con la autentificación.
+     */
     public void login(String username, String password) throws IOException, InterruptedException {
         String loginUrl = BASE_URL + "/login";
 
@@ -50,6 +72,16 @@ public class ApiService {
         }
     }
 
+    /**
+     * Método que le solicita a la API verificar si una tarjeta es válida.
+     * @param numeroTarjeta Numero de la tarjeta.
+     * @param mesVencimiento Mes de vencimiento de la tarjeta.
+     * @param anioVencimiento Año de vencimiento de la tarjeta.
+     * @param codigoSeguridad Código de seguridad de la tarjeta.
+     * @return True si la tarjeta es válida, false de lo contrario.
+     * @throws IOException Si huoo un error con la validación.
+     * @throws InterruptedException Si huoo un error con la validación.
+     */
     public boolean verificarTarjeta(String numeroTarjeta, int mesVencimiento, int anioVencimiento, int codigoSeguridad) throws IOException, InterruptedException {
         String validarTarjetaUrl = BASE_URL + "/validar_tarjeta";
 
@@ -78,33 +110,18 @@ public class ApiService {
         }
     }
 
-    public float obtenerSaldo(String numeroTarjeta, int mesVencimiento, int anioVencimiento, int codigoSeguridad) throws IOException, InterruptedException {
-        String obtenerSaldoUrl = BASE_URL + "/obtener_saldo";
-
-        String requestBody = String.format("{\"numero_tarjeta\":\"%s\",\"mes_vencimiento\":%d,\"anio_vencimiento\":%d,\"codigo_seguridad\":%d}",
-                numeroTarjeta, mesVencimiento, anioVencimiento, codigoSeguridad);
-
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(obtenerSaldoUrl))
-                .header("Content-Type", "application/json")
-                .header("Authorization", "Bearer " + token)
-                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
-                .build();
-
-        HttpClient httpClient = HttpClient.newHttpClient();
-        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
-        Gson gson = new Gson();
-        JsonObject responseBodyJson = gson.fromJson(response.body(), JsonObject.class);
-
-        if (response.statusCode() == 200) {
-            return responseBodyJson.get("saldo").getAsFloat();
-        } else {
-            String errorMessage = responseBodyJson.get("msg").getAsString();
-            throw new IOException(errorMessage);
-        }
-    }
-
+    /**
+     * Método que solicita a la API un cargo a una tarjeta ingresada en el sistema.
+     * @param numeroTarjeta Numero de la tarjeta.
+     * @param monto Monto del cargo.
+     * @param descripcion Descripción del cargo.
+     * @param mesVencimiento Mes de vencimiento de la tarjeta.
+     * @param anioVencimiento Año de vencimiento de la tarjeta.
+     * @param codigoSeguridad Código e seguridad de la tarjeta.
+     * @return True si el cargo se realizó con éxito, false de lo contrario.
+     * @throws IOException Si huoo un error con el cargo.
+     * @throws InterruptedException Si huoo un error con el cargo.
+     */
     public boolean realizarCargo(String numeroTarjeta, float monto, String descripcion, int mesVencimiento, int anioVencimiento, int codigoSeguridad) throws IOException, InterruptedException {
         String realizarCargoUrl = BASE_URL + "/realizar_cargo";
 

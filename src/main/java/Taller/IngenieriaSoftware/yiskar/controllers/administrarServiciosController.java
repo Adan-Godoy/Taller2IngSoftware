@@ -29,9 +29,11 @@ public class administrarServiciosController {
 
     private ObservableList<Servicio> listaServicios;
 
-    private Stage stage;
 
     @FXML
+    /**
+     * Método que inicia el contenido de la tabla del interfaz.
+     */
     public void initialize() {
         TablaServicios.setPlaceholder(new Label("No hay servicios registrados"));
         listaServicios = FXCollections.observableArrayList();
@@ -43,6 +45,9 @@ public class administrarServiciosController {
         cargarServicio();
     }
 
+    /**
+     * Método que actualiza el contenido de la tabla de servicios.
+     */
     private void cargarServicio() {
         listaServicios.clear();
         ServiciosRepository serviciosRepository = ServiciosRepository.getInstancia();
@@ -62,6 +67,9 @@ public class administrarServiciosController {
     }
 
     @FXML
+    /**
+     * Método que permite al usuario añadir un servicio al sistema.
+     */
     private void agregarServicio(ActionEvent event) {
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Agregar Servicio");
@@ -109,6 +117,9 @@ public class administrarServiciosController {
     }
 
     @FXML
+    /**
+     * Método que permite al usuario modificar el nombre de un servicio.
+     */
     private void modificarNombre(ActionEvent event) {
         Servicio servicioSeleccionado = TablaServicios.getSelectionModel().getSelectedItem();
 
@@ -143,6 +154,9 @@ public class administrarServiciosController {
     }
 
     @FXML
+    /**
+     * Método que permite al usuario modificar el precio de un servicio.
+     */
     private void modificarPrecio(ActionEvent event)
     {
         Servicio servicioSeleccionado = TablaServicios.getSelectionModel().getSelectedItem();
@@ -193,6 +207,9 @@ public class administrarServiciosController {
     }
 
     @FXML
+    /**
+     * Método que permite al usuario eliminiar un servicio del sistema.
+     */
     private void eliminarServicio(ActionEvent event) {
         Servicio servicioSeleccionado = TablaServicios.getSelectionModel().getSelectedItem();
 
@@ -220,6 +237,12 @@ public class administrarServiciosController {
         }
     }
 
+    /**
+     * Método que muestra un cuadro de advertencia al usuario.
+     * @param titulo Título del cuadro.
+     * @param encabezado Encabezado del cuadro.
+     * @param contenido Mensaje del cuadro.
+     */
     private void mostrarAlertaWarning(String titulo, String encabezado, String contenido) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle(titulo);

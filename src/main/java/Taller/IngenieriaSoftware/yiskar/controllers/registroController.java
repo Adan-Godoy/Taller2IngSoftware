@@ -28,10 +28,6 @@ import javafx.util.Duration;
 
 public class registroController {
 
-    private Stage stage;
-    private Scene scene;
-    private Parent root;
-
     @FXML
     private TextField nombreTextField;
 
@@ -59,9 +55,10 @@ public class registroController {
     @FXML
     private Label errorTexto;
 
-    public registroController( ) {
-    }
-
+    /**
+     * Método que inicia la interfaz de registro de usuario.
+     * @param event Detecta una interacción del usuario con la interfaz.
+     */
     @FXML
     private void cambiarIniciarSesion(ActionEvent event) {
         try {
@@ -76,6 +73,10 @@ public class registroController {
         }
     }
 
+    /**
+     * Método que permite al usuario poder registrarse en el sistema.
+     * @param event Detecta una interacción del usuario con la interfaz.
+     */
     @FXML
     private void registrarUsuario(ActionEvent event) {
         if (nombreTextField.getText().isEmpty()) {
@@ -143,8 +144,8 @@ public class registroController {
     }
 
     /***
-     * Método que mustra un mensaje de error en pantalla.
-     * @param msg Mensaje a mostrar.
+     * Método que activa un mensaje de error en pantalla que desaparece luego de 4 segundos.
+     * @param msg Texto del mensaje a mostrar.
      */
     private void mostrarError(String msg)
     {
@@ -173,18 +174,13 @@ public class registroController {
     }
 
 
+    /**
+     * Método que accede al repositorio de personas para verificar que un correo no exista en el sistema.
+     * @param correo correo a buscar en el sistema.
+     * @return True si existe, false de lo contrario.
+     */
     private boolean correoExistente(String correo) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(System.getProperty("user.dir") + "\\src\\main\\resources\\Taller\\IngenieriaSoftware\\yiskar\\Data\\Cliente.txt"))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] datos = line.split(",");
-                if (datos.length > 2 && datos[2].equals(correo)) {
-                    return true;
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return false;
+        PersonaRepository personaRepository = PersonaRepository.getInstance();
+        return personaRepository.buscarEmail(correo);
     }
 }

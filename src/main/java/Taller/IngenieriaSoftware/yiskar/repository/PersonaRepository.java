@@ -160,7 +160,7 @@ public class PersonaRepository implements IObserver {
     {
         for(int i = 0; i< personaRepository.cantidadClientes;i++)
         {
-            if(personaRepository.clientes[i].getEmail().equals(correo) && personaRepository.clientes[i].getContrasenia().equals(contrasenia))
+            if(personaRepository.clientes[i].getEmail().equalsIgnoreCase(correo) && personaRepository.clientes[i].getContrasenia().equals(contrasenia))
             {
                 ClienteAutenticado clienteAutenticado = ClienteAutenticado.getInstancia();
                 clienteAutenticado.setCliente(personaRepository.clientes[i]);
@@ -169,7 +169,7 @@ public class PersonaRepository implements IObserver {
         }
         for(int i = 0; i< personaRepository.cantidadJefes;i++)
         {
-            if(personaRepository.jefes[i].getEmail().equals(correo) && personaRepository.jefes[i].getContrasenia().equals(contrasenia))
+            if(personaRepository.jefes[i].getEmail().equalsIgnoreCase(correo) && personaRepository.jefes[i].getContrasenia().equals(contrasenia))
             {
                 return "Jefe";
             }
@@ -177,15 +177,20 @@ public class PersonaRepository implements IObserver {
         return null;
     }
 
+    /**
+     * Método que registra un cliente en el sistema y actualiza el archivo txt correspondiente a los clientes.
+     * @param nombre Nombre del nuevo cliente.
+     * @param edad Edad del nuevo cliente.
+     * @param correo Correo del nuevo cliente.
+     * @param contrasenia Contraseña del nuevo cliente.
+     * @return True si se agregó correctamente, false de lo contrario.
+     */
     public boolean registrarCliente(String nombre, String edad, String correo, String contrasenia)
     {
-        for(int i=0;i<cantidadClientes;i++)
+        if(buscarEmail(correo))
         {
-            if(clientes[i].getEmail().equals(correo))
-            {
-                AlertBox.mostrarError("El correo electrónico ingresado ya existe en el sistema","Error", Alert.AlertType.ERROR);
-                return false;
-            }
+            AlertBox.mostrarError("El correo electrónico ingresado ya existe en el sistema","Error", Alert.AlertType.ERROR);
+            return false;
         }
         for(int i=0;i<cantidadClientes;i++)
         {
@@ -230,6 +235,11 @@ public class PersonaRepository implements IObserver {
         }
     }
 
+    /**
+     * Método que actualiza los puntos en el archivo txt del cliente logueado.
+     * @param puntos Puntos actualizados.
+     * @param correo Correo del cliente logueado.
+     */
     private void actualizarPuntosTXT(int puntos, String correo)
     {
         StringBuilder contenido = new StringBuilder();
@@ -261,5 +271,26 @@ public class PersonaRepository implements IObserver {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Método que verifica la existencia de un correo en el sistema.
+     * @param email Correo a buscar.
+     * @return True si existe en el sistema, false de lo contrario.
+     */
+    public boolean buscarEmail(String email)
+    {
+        for(Persona persona: clientes)
+        {
+            if(persona==null)
+            {
+                break;
+            }
+            if(persona.getEmail().equalsIgnoreCase(email))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

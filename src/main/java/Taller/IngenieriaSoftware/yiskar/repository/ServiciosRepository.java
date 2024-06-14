@@ -6,12 +6,30 @@ import java.io.*;
 
 public class ServiciosRepository
 {
+    /**
+     * Instancia de la clase.
+     */
     private static ServiciosRepository instancia;
+    /**
+     * Lista de servicios en el sistema.
+     */
     private Servicio[] servicios;
+    /**
+     * Variable que almacena la cantidad de servicios existentes en el sistema.
+     */
     private int cantServicios;
+    /**
+     * Variable que controla el espacio de la lista de servicios del sistema.
+     */
     private int cantMaxServicios;
+    /**
+     * Variable que contiene la dirección del archivo de texto de los servicios del sistema.
+     */
     private final String serviciosDir = "\\src\\main\\resources\\Taller\\IngenieriaSoftware\\yiskar\\Data\\Servicios.txt";
 
+    /**
+     * Método constructor de la clase, que lee el archivo correspondiente a los servicios y los almacena en la variable servicios.
+     */
     private ServiciosRepository()
     {
         cantServicios = 0;
@@ -36,6 +54,10 @@ public class ServiciosRepository
         }
     }
 
+    /**
+     * Método que retorna la instancia de la clase, si no existe, crea una y la devuelve.
+     * @return
+     */
     public static ServiciosRepository getInstancia()
     {
         if(instancia==null)
@@ -45,6 +67,9 @@ public class ServiciosRepository
         return instancia;
     }
 
+    /**
+     * Método que duplica el espacio de la lista de servicios almacenados en el sistema.
+     */
     private void expandirMemoria()
     {
         cantMaxServicios = cantServicios*2;
@@ -57,8 +82,18 @@ public class ServiciosRepository
         servicios = nuevo;
     }
 
+    /**
+     * Método que retorna la lista de servicios del sistema.
+     * @return
+     */
     public Servicio[] obtenerServicios(){return servicios;}
 
+    /**
+     * Método que permite agregar un servicio al sistenma.
+     * @param nombre Nombre del nuevo servicio.
+     * @param precio Precio del nuevo servicio.
+     * @return True si se agregó el servicio al sistema, false de lo contrario.
+     */
     public boolean agregarServicio(String nombre, int precio)
     {
         for(Servicio servicio:servicios)
@@ -86,6 +121,11 @@ public class ServiciosRepository
         return true;
     }
 
+    /**
+     * Método que permite eliminar un servicio del sistema.
+     * @param nombre Nombre del servicio a eliminar.
+     * @return True si el servicio fué eliminado, false de lo contrario.
+     */
     public boolean eliminarServicio(String nombre)
     {
         for(int i=0;i<cantServicios;i++)
@@ -138,6 +178,12 @@ public class ServiciosRepository
         return false;
     }
 
+    /**
+     * Método que permite editar el precio de un servicio registrado en el sistema.
+     * @param nombre Nombre del servicio.
+     * @param precio Nuevo precio del servicio.
+     * @return True si la modificación fue existosa, false de lo contrario.
+     */
     public boolean editarPrecio(String nombre, int precio)
     {
         for(Servicio servicio: servicios)
@@ -182,6 +228,12 @@ public class ServiciosRepository
         return false;
     }
 
+    /**
+     * Método que permite editar el nombre de un servicio registrado en el sistema.
+     * @param nombre Nombre del servicio.
+     * @param nuevoNombre Nuevo nombre del servicio.
+     * @return True si la modificación fue existosa, false de lo contrario.
+     */
     public boolean editarNombre(String nombre, String nuevoNombre)
     {
         for(Servicio servicio: servicios)

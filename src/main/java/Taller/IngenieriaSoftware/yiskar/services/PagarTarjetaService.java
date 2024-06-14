@@ -9,13 +9,35 @@ import java.util.Optional;
 
 public class PagarTarjetaService implements IPagarService
 {
+    /**
+     * Variable que almacena el numero de la tarjeta utilizada.
+     */
     private String numeroTarjeta;
+    /**
+     * Variable que almacena el mes de vencimiento de la tarjeta.
+     */
     private int mesVencimiento;
+    /**
+     * Variable que almacena el año de vencimiento de la tarjeta.
+     */
     private int anhioVencimiento;
+    /**
+     * Variable que almacena el código de seguridad de la tarjeta.
+     */
     private int codigoSeguridad;
+    /**
+     * Variable que indica si la tarjeta es válida o no.
+     */
     private boolean valido;
+    /**
+     * Método que almacena el monto total de la venta.
+     */
     private float montoTotal;
 
+    /**
+     * Método constructor de la clase.
+     * @param montoTotal monto total de la venta.
+     */
     public PagarTarjetaService(float montoTotal)
     {
         validarTarjeta();
@@ -39,6 +61,9 @@ public class PagarTarjetaService implements IPagarService
         }
     }
 
+    /**
+     * Método que valida la tarjeta ingresada y almacena la validez de esta.
+     */
     public void validarTarjeta()
     {
         // Diálogo para solicitar el número de tarjeta de crédito

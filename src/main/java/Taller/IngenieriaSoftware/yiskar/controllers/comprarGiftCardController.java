@@ -41,6 +41,9 @@ public class comprarGiftCardController{
     private ObservableList<Servicio> listaServicioDisp;
     private ObservableList<Servicio> listaServicioAgre;
 
+    /**
+     * Método que inicia el contenido de las tablas de la interfaz.
+     */
     public void initialize() {
         tablaServiciosDisp.setPlaceholder(new Label("No hay servicios registrados"));
         listaServicioDisp = FXCollections.observableArrayList();
@@ -66,6 +69,9 @@ public class comprarGiftCardController{
         puntosTxt.setText("Puntos disponibles: "+clienteAutenticado.obtenerPuntos());
     }
 
+    /**
+     * Método que reinicia la tabla de servicios disponibles.
+     */
     private void cargarServicio() {
         listaServicioDisp.clear();
 
@@ -84,6 +90,10 @@ public class comprarGiftCardController{
         tablaServiciosDisp.refresh();
     }
 
+    /**
+     * Método que permite al cliente agregar un servicio a su tabla de servicios seleccionados.
+     * @param event Detecta una interacción del usuario con la interfaz.
+     */
     @FXML
     private void agregarServicio(ActionEvent event) {
         Servicio selectedServicio = tablaServiciosDisp.getSelectionModel().getSelectedItem();
@@ -115,6 +125,10 @@ public class comprarGiftCardController{
         }
     }
 
+    /**
+     * Método que permite al cliente eliminar un servicio de su tabla de servicios seleccionados.
+     * @param event Detecta una interacción del usuario con la interfaz.
+     */
     @FXML
     private void eliminarServicio(ActionEvent event) {
         Servicio selectedServicio = tablaServiciosAgre.getSelectionModel().getSelectedItem();
@@ -141,6 +155,11 @@ public class comprarGiftCardController{
             AlertBox.mostrarError("Por favor, seleccione un servicio para eliminar.", "No hay servicio seleccionado", Alert.AlertType.WARNING);
         }
     }
+
+    /**
+     * Método que permite al cliente poder pagar los servicios seleccionados por medio de tarjeta de crédito.
+     * @param event Detecta una interacción del usuario con la interfaz.
+     */
     @FXML
     private void pagoTarjeta(ActionEvent event) {
 
@@ -182,6 +201,10 @@ public class comprarGiftCardController{
 
     }
 
+    /**
+     * Método que permite al cliente poder pagar los servicios seleccionados por medio de sus puntos acumulados.
+     * @param event Detecta una interacción del usuario con la interfaz.
+     */
     @FXML
     private void pagoPuntos(ActionEvent event)
     {
