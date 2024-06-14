@@ -1,16 +1,14 @@
 package Taller.IngenieriaSoftware.yiskar.entities;
 
-import javafx.scene.image.Image;
-
 import java.util.Objects;
 
-public class Servicios {
+public class Servicio {
 
     private String nombre;
-    private float precio;
+    private int precio;
 
 
-    public Servicios(String nombre, float precio) {
+    public Servicio(String nombre, int precio) {
         this.nombre = nombre;
         this.precio = precio;
 
@@ -24,11 +22,11 @@ public class Servicios {
         this.nombre = nombre;
     }
 
-    public float getPrecio() {
+    public int getPrecio() {
         return precio;
     }
 
-    public void setPrecio(float precio) {
+    public void setPrecio(int precio) {
         this.precio = precio;
     }
 
@@ -36,8 +34,8 @@ public class Servicios {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Servicios servicios = (Servicios) o;
-        return Float.compare(precio, servicios.precio) == 0 && Objects.equals(nombre, servicios.nombre);
+        Servicio servicio = (Servicio) o;
+        return Float.compare(precio, servicio.precio) == 0 && Objects.equals(nombre, servicio.nombre);
     }
 
     @Override

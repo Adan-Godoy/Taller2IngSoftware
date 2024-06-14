@@ -1,8 +1,9 @@
 package Taller.IngenieriaSoftware.yiskar.controllers;
 
 import Taller.IngenieriaSoftware.yiskar.entities.ClienteAutenticado;
-import Taller.IngenieriaSoftware.yiskar.entities.Servicios;
+import Taller.IngenieriaSoftware.yiskar.entities.Servicio;
 import Taller.IngenieriaSoftware.yiskar.repository.PersonaRepository;
+import Taller.IngenieriaSoftware.yiskar.repository.ServiciosRepository;
 import Taller.IngenieriaSoftware.yiskar.services.PagarPuntosService;
 import Taller.IngenieriaSoftware.yiskar.services.PagarTarjetaService;
 import Taller.IngenieriaSoftware.yiskar.util.ActualizadorPuntos;
@@ -21,97 +22,93 @@ import java.io.IOException;
 public class comprarGiftCardController{
 
     @FXML
-    private TableView<Servicios> tablaServiciosDisp;
+    private TableView<Servicio> tablaServiciosDisp;
     @FXML
-    private TableView<Servicios> tablaServiciosAgre;
+    private TableView<Servicio> tablaServiciosAgre;
 
     @FXML
-    private TableColumn<Servicios, String> colNombreDisp;
+    private TableColumn<Servicio, String> colNombreDisp;
     @FXML
-    private TableColumn<Servicios, Float> colPrecioDisp;
+    private TableColumn<Servicio, Float> colPrecioDisp;
 
     @FXML
-    private TableColumn<Servicios, String> colNombreAgre;
+    private TableColumn<Servicio, String> colNombreAgre;
     @FXML
-    private TableColumn<Servicios, Float> colPrecioAgre;
+    private TableColumn<Servicio, Float> colPrecioAgre;
 
     @FXML
     private Label puntosTxt;
-    private ObservableList<Servicios> listaServiciosDisp;
-    private ObservableList<Servicios> listaServiciosAgre;
+    private ObservableList<Servicio> listaServicioDisp;
+    private ObservableList<Servicio> listaServicioAgre;
 
     public void initialize() {
         tablaServiciosDisp.setPlaceholder(new Label("No hay servicios registrados"));
-        listaServiciosDisp = FXCollections.observableArrayList();
+        listaServicioDisp = FXCollections.observableArrayList();
 
         this.colNombreDisp.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         this.colPrecioDisp.setCellValueFactory(new PropertyValueFactory<>("precio"));
 
-        tablaServiciosDisp.setItems(listaServiciosDisp);
+        tablaServiciosDisp.setItems(listaServicioDisp);
         cargarServicio();
 
         tablaServiciosAgre.setPlaceholder(new Label("No hay servicios agregados"));
-        listaServiciosAgre = FXCollections.observableArrayList();
+        listaServicioAgre = FXCollections.observableArrayList();
 
         this.colNombreAgre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         this.colPrecioAgre.setCellValueFactory(new PropertyValueFactory<>("precio"));
 
-        tablaServiciosAgre.setItems(listaServiciosAgre);
+        tablaServiciosAgre.setItems(listaServicioAgre);
 
-        Servicios total = new Servicios("Total", 0);
-        listaServiciosAgre.add(total);
+        Servicio total = new Servicio("Total", 0);
+        listaServicioAgre.add(total);
 
         ClienteAutenticado clienteAutenticado = ClienteAutenticado.getInstancia();
         puntosTxt.setText("Puntos disponibles: "+clienteAutenticado.obtenerPuntos());
     }
 
     private void cargarServicio() {
-        try (BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + "\\src\\main\\resources\\Taller\\IngenieriaSoftware\\yiskar\\Data\\Servicios.txt"))) {
-            String linea;
-            while ((linea = br.readLine()) != null) {
-                String[] datos = linea.split(",");
-                if (datos.length == 2) {
-                    String nombre = datos[0];
-                    String precioString = datos[1];
-                    try {
-                        float precio = Float.parseFloat(precioString);
-                        Servicios servicio = new Servicios(nombre, precio);
-                        listaServiciosDisp.add(servicio);
-                    } catch (NumberFormatException e) {
-                        System.err.println("Error: El valor de precio no es un número válido: " + precioString);
-                    }
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        listaServicioDisp.clear();
+
+        ServiciosRepository serviciosRepository = ServiciosRepository.getInstancia();
+        Servicio[] servicios = serviciosRepository.obtenerServicios();
+        if (servicios == null) {
+            AlertBox.mostrarError("No hay servicios registrados", "No hay datos", Alert.AlertType.WARNING);
+            return;
         }
+        for (Servicio servicio : servicios) {
+            if (servicio == null) {
+                return;
+            }
+            listaServicioDisp.add(servicio);
+        }
+        tablaServiciosDisp.refresh();
     }
 
     @FXML
     private void agregarServicio(ActionEvent event) {
-        Servicios selectedServicio = tablaServiciosDisp.getSelectionModel().getSelectedItem();
+        Servicio selectedServicio = tablaServiciosDisp.getSelectionModel().getSelectedItem();
         if (selectedServicio != null && !selectedServicio.getNombre().equals("Total")) {
             // Eliminar el total temporalmente
-            Servicios totalServicio = listaServiciosAgre.remove(listaServiciosAgre.size() - 1);
+            Servicio totalServicio = listaServicioAgre.remove(listaServicioAgre.size() - 1);
 
 
             // Añadir el servicio seleccionado a la tabla de servicios agregados
-            listaServiciosAgre.add(selectedServicio);
+            listaServicioAgre.add(selectedServicio);
 
             tablaServiciosDisp.getSelectionModel().clearSelection();
 
             // Actualizar el total
-            float nuevoTotal = totalServicio.getPrecio() + selectedServicio.getPrecio();
+            int nuevoTotal = totalServicio.getPrecio() + selectedServicio.getPrecio();
             totalServicio.setPrecio(nuevoTotal);
 
             // Añadir el total nuevamente al final de la lista
-            listaServiciosAgre.add(totalServicio);
+            listaServicioAgre.add(totalServicio);
 
             // Refrescar la tabla para mostrar el total actualizado
             tablaServiciosAgre.refresh();
 
             // Eliminar el servicio seleccionado de la tabla de servicios disponibles
-            listaServiciosDisp.remove(selectedServicio);
+            listaServicioDisp.remove(selectedServicio);
         } else
         {
             AlertBox.mostrarError("Por favor, seleccione un servicio para agregar.", "No hay servicio seleccionado", Alert.AlertType.WARNING);
@@ -120,21 +117,21 @@ public class comprarGiftCardController{
 
     @FXML
     private void eliminarServicio(ActionEvent event) {
-        Servicios selectedServicio = tablaServiciosAgre.getSelectionModel().getSelectedItem();
+        Servicio selectedServicio = tablaServiciosAgre.getSelectionModel().getSelectedItem();
         if (selectedServicio != null && !selectedServicio.getNombre().equals("Total")) {
             // Añadir el servicio eliminado de nuevo a la tabla de servicios disponibles
-            Servicios totalServicio = listaServiciosAgre.remove(listaServiciosAgre.size() - 1);
-            listaServiciosDisp.add(selectedServicio);
+            Servicio totalServicio = listaServicioAgre.remove(listaServicioAgre.size() - 1);
+            listaServicioDisp.add(selectedServicio);
             tablaServiciosAgre.getSelectionModel().clearSelection();
 
-            float nuevoTotal = totalServicio.getPrecio() - selectedServicio.getPrecio();
+            int nuevoTotal = totalServicio.getPrecio() - selectedServicio.getPrecio();
             totalServicio.setPrecio(nuevoTotal);
 
             // Añadir el total nuevamente al final de la lista
-            listaServiciosAgre.add(totalServicio);
+            listaServicioAgre.add(totalServicio);
 
             // Eliminar el servicio seleccionado de la tabla de servicios agregados
-            listaServiciosAgre.remove(selectedServicio);
+            listaServicioAgre.remove(selectedServicio);
 
             // Refrescar las tablas
             tablaServiciosDisp.refresh();
@@ -147,18 +144,18 @@ public class comprarGiftCardController{
     @FXML
     private void pagoTarjeta(ActionEvent event) {
 
-        float montoTotal = listaServiciosAgre.get(listaServiciosAgre.size() - 1).getPrecio();  // Obtener el monto total correcto
+        float montoTotal = listaServicioAgre.get(listaServicioAgre.size() - 1).getPrecio();  // Obtener el monto total correcto
 
         PagarTarjetaService pago = new PagarTarjetaService(montoTotal);
 
         if (pago.realizarPago())
         {
             // Si el cargo se realiza con éxito, limpiar la lista de servicios agregados
-            listaServiciosAgre.clear();
+            listaServicioAgre.clear();
 
             // Añadir el servicio 'Total' nuevamente con precio 0 después de limpiar la lista
-            Servicios total = new Servicios("Total", 0);
-            listaServiciosAgre.add(total);
+            Servicio total = new Servicio("Total", 0);
+            listaServicioAgre.add(total);
 
             // Actualizar las tablas
             tablaServiciosDisp.refresh();
@@ -177,6 +174,7 @@ public class comprarGiftCardController{
 
             // Mostrar mensaje de éxito al usuario
             AlertBox.mostrarError("Cargo realizado", "Se ha realizado el cargo correctamente.", Alert.AlertType.CONFIRMATION);
+            cargarServicio();
         } else {
             // Mostrar mensaje de error si el cargo no se realiza
             AlertBox.mostrarError("Error en el cargo", "No se pudo realizar el cargo en la tarjeta.", Alert.AlertType.ERROR);
@@ -187,16 +185,16 @@ public class comprarGiftCardController{
     @FXML
     private void pagoPuntos(ActionEvent event)
     {
-        float montoTotal = listaServiciosAgre.get(listaServiciosAgre.size() - 1).getPrecio();  // Obtener el monto total correcto
+        float montoTotal = listaServicioAgre.get(listaServicioAgre.size() - 1).getPrecio();  // Obtener el monto total correcto
         PagarPuntosService pagarPuntosService = new PagarPuntosService(montoTotal);
         if(pagarPuntosService.realizarPago())
         {
             // Si el cargo se realiza con éxito, limpiar la lista de servicios agregados
-            listaServiciosAgre.clear();
+            listaServicioAgre.clear();
 
             // Añadir el servicio 'Total' nuevamente con precio 0 después de limpiar la lista
-            Servicios total = new Servicios("Total", 0);
-            listaServiciosAgre.add(total);
+            Servicio total = new Servicio("Total", 0);
+            listaServicioAgre.add(total);
 
             // Actualizar las tablas
             tablaServiciosDisp.refresh();
@@ -204,6 +202,7 @@ public class comprarGiftCardController{
             puntosTxt.setText("Puntos disponibles: "+pagarPuntosService.obtenerPuntos());
 
             AlertBox.mostrarError("Cargo realizado", "Se ha realizado el cargo correctamente.", Alert.AlertType.CONFIRMATION);
+            cargarServicio();
 
         }
 

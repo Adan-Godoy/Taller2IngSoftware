@@ -14,11 +14,11 @@ public class PersonaRepository implements IObserver {
     /**
      * Direccion del archivo "CLiente.txt" que contiene la información de los clientes.
      */
-    private String clientesDir = "\\src\\main\\resources\\Taller\\IngenieriaSoftware\\yiskar\\Data\\Cliente.txt";
+    private final String clientesDir = "\\src\\main\\resources\\Taller\\IngenieriaSoftware\\yiskar\\Data\\Cliente.txt";
     /**
      * Direccion el archivo "JefeLocal.txt" que contiene la información de los jefes de local.
      */
-    private String jefesDir  = "\\src\\main\\resources\\Taller\\IngenieriaSoftware\\yiskar\\Data\\JefeLocal.txt";
+    private final String jefesDir  = "\\src\\main\\resources\\Taller\\IngenieriaSoftware\\yiskar\\Data\\JefeLocal.txt";
     /**
      * Arreglo que almacena a los clientes.
      */
@@ -230,14 +230,14 @@ public class PersonaRepository implements IObserver {
         }
     }
 
-    private void actualizarPuntosTXT(int puntos, String correo){
-        String rutaArchivo = System.getProperty("user.dir") + clientesDir;
+    private void actualizarPuntosTXT(int puntos, String correo)
+    {
         StringBuilder contenido = new StringBuilder();
-        String lineaAReemplazar = "Línea a reemplazar";
-        String nuevaLinea = "Esta es la nueva línea.";
+        String lineaAReemplazar;
+        String nuevaLinea;
 
         // Leer el contenido del archivo
-        try (BufferedReader br = new BufferedReader(new FileReader(rutaArchivo))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + clientesDir))) {
             String linea;
             while ((linea = br.readLine()) != null) {
                 String[] datos = linea.split(",");
@@ -256,7 +256,7 @@ public class PersonaRepository implements IObserver {
         }
 
         // Escribir el contenido modificado de nuevo en el archivo
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(rutaArchivo))) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(System.getProperty("user.dir") + clientesDir))) {
             bw.write(contenido.toString());
         } catch (IOException e) {
             e.printStackTrace();

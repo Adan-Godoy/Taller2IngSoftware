@@ -1,8 +1,9 @@
 Lavado Completo,3500
 Pulido de Carrocería,4500
 Descontaminación de Pintura,5000
-Encerado,4000
 Limpieza Interior a Fondo,3800
 Lavado de Motor,3200
 Tratamiento de Asientos de Cuero,3600
 Lavado de Alfombras,3100
+Lavado de llantas,8000
+Encerado,8000

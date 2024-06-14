@@ -1,6 +1,8 @@
 package Taller.IngenieriaSoftware.yiskar.controllers;
 
-import Taller.IngenieriaSoftware.yiskar.entities.Servicios;
+import Taller.IngenieriaSoftware.yiskar.entities.Servicio;
+import Taller.IngenieriaSoftware.yiskar.repository.ServiciosRepository;
+import Taller.IngenieriaSoftware.yiskar.util.AlertBox;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -19,13 +21,13 @@ import java.util.Optional;
 public class administrarServiciosController {
 
     @FXML
-    private TableView<Servicios> TablaServicios;
+    private TableView<Servicio> TablaServicios;
     @FXML
-    private TableColumn<Servicios, String> colNombre;
+    private TableColumn<Servicio, String> colNombre;
     @FXML
-    private TableColumn<Servicios, Float> colPrecio;
+    private TableColumn<Servicio, Float> colPrecio;
 
-    private ObservableList<Servicios> listaServicios;
+    private ObservableList<Servicio> listaServicios;
 
     private Stage stage;
 
@@ -34,34 +36,29 @@ public class administrarServiciosController {
         TablaServicios.setPlaceholder(new Label("No hay servicios registrados"));
         listaServicios = FXCollections.observableArrayList();
 
-        this.colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-        this.colPrecio.setCellValueFactory(new PropertyValueFactory<>("precio"));
+        this.colNombre.setCellValueFactory(new PropertyValueFactory<>("Nombre"));
+        this.colPrecio.setCellValueFactory(new PropertyValueFactory<>("Precio"));
 
         TablaServicios.setItems(listaServicios);
         cargarServicio();
     }
 
     private void cargarServicio() {
-        try (BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + "\\src\\main\\resources\\Taller\\IngenieriaSoftware\\yiskar\\Data\\Servicios.txt"))) {
-            String linea;
-            while ((linea = br.readLine()) != null) {
-                String[] datos = linea.split(",");
-                if (datos.length == 2) {
-                    String nombre = datos[0];
-                    String precioString = datos[1];
-                    try {
-                        float precio = Float.parseFloat(precioString);
-                        Servicios servicio = new Servicios(nombre, precio);
-                        listaServicios.add(servicio);
-                    } catch (NumberFormatException e) {
-                        System.err.println("Error: El valor de precio no es un número válido: " + precioString);
-                        // Aquí puedes manejar el error según tu lógica de negocio, por ejemplo, ignorar la línea o notificar al usuario.
-                    }
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        listaServicios.clear();
+        ServiciosRepository serviciosRepository = ServiciosRepository.getInstancia();
+        Servicio[] servicios = serviciosRepository.obtenerServicios();
+        if (servicios == null) {
+            AlertBox.mostrarError("No hay servicios registrados", "No hay datos", Alert.AlertType.WARNING);
+            return;
         }
+        for (Servicio servicio : servicios) {
+            if (servicio == null) {
+                return;
+            }
+            listaServicios.add(servicio);
+        }
+        TablaServicios.refresh();
+
     }
 
     @FXML
@@ -74,11 +71,7 @@ public class administrarServiciosController {
 
         nombreResult.ifPresent(nombre -> {
             if (nombre.trim().isEmpty()) {
-                mostrarAlertaError("Error al agregar servicio", "El nombre del servicio no puede estar vacío.");
-                return;
-            }
-            if (servicioExiste(nombre)) {
-                mostrarAlertaError("Error al agregar servicio", "Este nombre de servicio ya existe.");
+                AlertBox.mostrarError("El nombre del servicio no puede estar vacío.", "Error al agregar servicio.", Alert.AlertType.ERROR);
                 return;
             }
 
@@ -90,27 +83,34 @@ public class administrarServiciosController {
 
             precioResult.ifPresent(precioStr -> {
                 if (precioStr.trim().isEmpty()) {
-                    mostrarAlertaError("Error al agregar servicio", "El precio no puede estar vacío.");
+                    AlertBox.mostrarError("El precio no puede estar vacío.", "Error al agregar servicio.", Alert.AlertType.ERROR);
                     return;
                 }
                 try {
                     float precio = Float.parseFloat(precioStr);
                     if (precio < 300) {
-                        mostrarAlertaError("Error al agregar servicio", "El precio debe ser al menos 300 pesos chilenos.");
+                        AlertBox.mostrarError("El precio debe ser al menos de 300 pesos chilenos.", "Error al agregar servicio.", Alert.AlertType.ERROR);
                         return;
                     }
-                    Servicios nuevoServicio = new Servicios(nombre, precio);
-                    listaServicios.add(nuevoServicio);
+
+                    ServiciosRepository serviciosRepository = ServiciosRepository.getInstancia();
+                    if (serviciosRepository.agregarServicio(nombre, (int) precio)) {
+                        AlertBox.mostrarError("Servicio agregado con éxito.", "Operación exitosa", Alert.AlertType.CONFIRMATION);
+                        cargarServicio();
+                    } else {
+                        AlertBox.mostrarError("Este nombre de servicio ya existe.", "Error al agregar servicio.", Alert.AlertType.ERROR);
+                    }
+
                 } catch (NumberFormatException e) {
-                    mostrarAlertaError("Error al agregar servicio", "El precio debe ser un número válido.");
+                    AlertBox.mostrarError("El precio debe ser un valor numérico.", "Error al agregar servicio.", Alert.AlertType.ERROR);
                 }
             });
         });
     }
 
     @FXML
-    private void modificarServicio(ActionEvent event) {
-        Servicios servicioSeleccionado = TablaServicios.getSelectionModel().getSelectedItem();
+    private void modificarNombre(ActionEvent event) {
+        Servicio servicioSeleccionado = TablaServicios.getSelectionModel().getSelectedItem();
 
         if (servicioSeleccionado != null) {
             TextInputDialog dialog = new TextInputDialog(servicioSeleccionado.getNombre());
@@ -119,49 +119,82 @@ public class administrarServiciosController {
             dialog.setContentText("Nombre:");
             Optional<String> nombreResult = dialog.showAndWait();
 
-            nombreResult.ifPresent(nombre -> {
+            nombreResult.ifPresent(nombre ->
+            {
                 if (nombre.trim().isEmpty()) {
-                    mostrarAlertaError("Error al modificar servicio", "El nombre del servicio no puede estar vacío.");
-                    return;
-                }
-                if (!nombre.equalsIgnoreCase(servicioSeleccionado.getNombre()) && servicioExiste(nombre)) {
-                    mostrarAlertaError("Error al modificar servicio", "Este nombre de servicio ya existe.");
+                    AlertBox.mostrarError("El nombre del servicio no puede estar vacío.", "Error al modificar servicio.", Alert.AlertType.ERROR);
                     return;
                 }
 
-                TextInputDialog precioDialog = new TextInputDialog(String.valueOf(servicioSeleccionado.getPrecio()));
-                precioDialog.setTitle("Modificar Servicio");
-                precioDialog.setHeaderText("Modificar precio del servicio");
-                precioDialog.setContentText("Precio:");
-                Optional<String> precioResult = precioDialog.showAndWait();
+                ServiciosRepository serviciosRepository = ServiciosRepository.getInstancia();
+                if (serviciosRepository.editarNombre(servicioSeleccionado.getNombre(), nombre))
+                {
+                    AlertBox.mostrarError("Nombre modificado con éxito", "Modificacion exitosa.", Alert.AlertType.CONFIRMATION);
+                    cargarServicio();
+                } else
+                {
+                    AlertBox.mostrarError("El nombre seleccionado ya existe.", "Error al modificar servicio", Alert.AlertType.ERROR);
+                }
+            });
+        }else
+        {
+            mostrarAlertaWarning("Seleccionar Servicio", "Ningún servicio seleccionado", "Por favor, seleccione un servicio para modificar.");
+        }
+    }
 
-                precioResult.ifPresent(precioStr -> {
-                    if (precioStr.trim().isEmpty()) {
-                        mostrarAlertaError("Error al modificar servicio", "El precio no puede estar vacío.");
+    @FXML
+    private void modificarPrecio(ActionEvent event)
+    {
+        Servicio servicioSeleccionado = TablaServicios.getSelectionModel().getSelectedItem();
+
+        if (servicioSeleccionado != null) {
+            TextInputDialog dialog = new TextInputDialog(servicioSeleccionado.getNombre());
+            dialog.setTitle("Modificar Servicio");
+            dialog.setHeaderText("Modificar precio del servicio");
+            dialog.setContentText("Nuevo precio:");
+            Optional<String> precioResult = dialog.showAndWait();
+
+            precioResult.ifPresent(precio ->
+            {
+                if (precio.trim().isEmpty()) {
+                    AlertBox.mostrarError("El precio del servicio no puede estar vacío.", "Error al modificar servicio.", Alert.AlertType.ERROR);
+                    return;
+                }
+                int precioNuevo;
+                try
+                {
+                    precioNuevo = Integer.parseInt(precio);
+                    if(precioNuevo<300)
+                    {
+                        AlertBox.mostrarError("El precio no puede ser menor a 300 pesos chilenos.","Error al modificar servicio", Alert.AlertType.CONFIRMATION);
                         return;
                     }
-                    try {
-                        float precio = Float.parseFloat(precioStr);
-                        if (precio < 300) {
-                            mostrarAlertaError("Error al modificar servicio", "El precio debe ser al menos 300 pesos chilenos.");
-                            return;
-                        }
-                        servicioSeleccionado.setNombre(nombre);
-                        servicioSeleccionado.setPrecio(precio);
-                        TablaServicios.refresh(); // Actualizar la tabla
-                    } catch (NumberFormatException e) {
-                        mostrarAlertaError("Error al modificar servicio", "El precio debe ser un número válido.");
-                    }
-                });
+
+                }catch(Exception e)
+                {
+                    AlertBox.mostrarError("El precio debe ser numérico","Error al modificar servicio", Alert.AlertType.ERROR);
+                    return;
+                }
+
+                ServiciosRepository serviciosRepository = ServiciosRepository.getInstancia();
+                if (serviciosRepository.editarPrecio(servicioSeleccionado.getNombre(), precioNuevo))
+                {
+                    AlertBox.mostrarError("Precio modificado con éxito", "Modificacion exitosa.", Alert.AlertType.CONFIRMATION);
+                    cargarServicio();
+                } else
+                {
+                    AlertBox.mostrarError("Hubo un error al modificar el precio.", "Error al modificar servicio", Alert.AlertType.ERROR);
+                }
             });
-        } else {
+        }else
+        {
             mostrarAlertaWarning("Seleccionar Servicio", "Ningún servicio seleccionado", "Por favor, seleccione un servicio para modificar.");
         }
     }
 
     @FXML
     private void eliminarServicio(ActionEvent event) {
-        Servicios servicioSeleccionado = TablaServicios.getSelectionModel().getSelectedItem();
+        Servicio servicioSeleccionado = TablaServicios.getSelectionModel().getSelectedItem();
 
         if (servicioSeleccionado != null) {
             // Confirmación doble para eliminar servicio
@@ -172,23 +205,19 @@ public class administrarServiciosController {
 
             Optional<ButtonType> resultado = confirmacion.showAndWait();
             if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
-                listaServicios.remove(servicioSeleccionado);
+                ServiciosRepository serviciosRepository = ServiciosRepository.getInstancia();
+                if(serviciosRepository.eliminarServicio(servicioSeleccionado.getNombre()))
+                {
+                    AlertBox.mostrarError("El servicio ha sido eliminado exitosamente","Operacion exitosa", Alert.AlertType.CONFIRMATION);
+                    cargarServicio();
+                }
+            }else
+            {
+                AlertBox.mostrarError("Hubo un error al eliminar el servicio.","Error al eliminar servicio.", Alert.AlertType.ERROR);
             }
         } else {
             mostrarAlertaWarning("Seleccionar Servicio", "Ningún servicio seleccionado", "Por favor, seleccione un servicio para eliminar.");
         }
-    }
-
-    private boolean servicioExiste(String nombre) {
-        return listaServicios.stream().anyMatch(servicio -> servicio.getNombre().equalsIgnoreCase(nombre));
-    }
-
-    private void mostrarAlertaError(String titulo, String contenido) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(titulo);
-        alert.setHeaderText(null);
-        alert.setContentText(contenido);
-        alert.showAndWait();
     }
 
     private void mostrarAlertaWarning(String titulo, String encabezado, String contenido) {
@@ -199,23 +228,4 @@ public class administrarServiciosController {
         alert.showAndWait();
     }
 
-    public void guardarServicios() {
-        Path archivoServicios = Paths.get(System.getProperty("user.dir"), "src", "main", "resources", "Taller", "IngenieriaSoftware", "yiskar", "Data", "Servicios.txt");
-
-        try {
-            // Crear el archivo si no existe
-            if (!Files.exists(archivoServicios)) {
-                Files.createFile(archivoServicios);
-            }
-
-            // Escribir los servicios en el archivo
-            PrintWriter writer = new PrintWriter(Files.newBufferedWriter(archivoServicios, StandardOpenOption.TRUNCATE_EXISTING));
-            for (Servicios servicio : listaServicios) {
-                writer.println(servicio.getNombre() + "," + servicio.getPrecio());
-            }
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }
