@@ -1,7 +1,11 @@
 package Taller.IngenieriaSoftware.yiskar.controllers;
 
+import Taller.IngenieriaSoftware.yiskar.entities.ClienteAutenticado;
 import Taller.IngenieriaSoftware.yiskar.entities.Servicios;
+import Taller.IngenieriaSoftware.yiskar.repository.PersonaRepository;
+import Taller.IngenieriaSoftware.yiskar.services.PagarPuntosService;
 import Taller.IngenieriaSoftware.yiskar.services.PagarTarjetaService;
+import Taller.IngenieriaSoftware.yiskar.util.ActualizadorPuntos;
 import Taller.IngenieriaSoftware.yiskar.util.AlertBox;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,7 +18,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class comprarGiftCardController {
+public class comprarGiftCardController{
 
     @FXML
     private TableView<Servicios> tablaServiciosDisp;
@@ -56,6 +60,9 @@ public class comprarGiftCardController {
 
         Servicios total = new Servicios("Total", 0);
         listaServiciosAgre.add(total);
+
+        ClienteAutenticado clienteAutenticado = ClienteAutenticado.getInstancia();
+        puntosTxt.setText("Puntos disponibles: "+clienteAutenticado.obtenerPuntos());
     }
 
     private void cargarServicio() {
@@ -157,6 +164,17 @@ public class comprarGiftCardController {
             tablaServiciosDisp.refresh();
             tablaServiciosAgre.refresh();
 
+            int puntosObtenidos = Math.round(montoTotal*20/100);
+            ClienteAutenticado clienteAutenticado = ClienteAutenticado.getInstancia();
+            int puntosCliente = clienteAutenticado.obtenerPuntos();
+            int puntosFinales = puntosCliente+puntosObtenidos;
+
+            ActualizadorPuntos actualizadorPuntos = new ActualizadorPuntos();
+            actualizadorPuntos.addObserver(PersonaRepository.getInstance());
+            actualizadorPuntos.addObserver(ClienteAutenticado.getInstancia());
+            actualizadorPuntos.actualizarPuntos(puntosFinales);
+            puntosTxt.setText("Puntos disponibles: "+puntosFinales);
+
             // Mostrar mensaje de éxito al usuario
             AlertBox.mostrarError("Cargo realizado", "Se ha realizado el cargo correctamente.", Alert.AlertType.CONFIRMATION);
         } else {
@@ -170,6 +188,24 @@ public class comprarGiftCardController {
     private void pagoPuntos(ActionEvent event)
     {
         float montoTotal = listaServiciosAgre.get(listaServiciosAgre.size() - 1).getPrecio();  // Obtener el monto total correcto
+        PagarPuntosService pagarPuntosService = new PagarPuntosService(montoTotal);
+        if(pagarPuntosService.realizarPago())
+        {
+            // Si el cargo se realiza con éxito, limpiar la lista de servicios agregados
+            listaServiciosAgre.clear();
+
+            // Añadir el servicio 'Total' nuevamente con precio 0 después de limpiar la lista
+            Servicios total = new Servicios("Total", 0);
+            listaServiciosAgre.add(total);
+
+            // Actualizar las tablas
+            tablaServiciosDisp.refresh();
+            tablaServiciosAgre.refresh();
+            puntosTxt.setText("Puntos disponibles: "+pagarPuntosService.obtenerPuntos());
+
+            AlertBox.mostrarError("Cargo realizado", "Se ha realizado el cargo correctamente.", Alert.AlertType.CONFIRMATION);
+
+        }
 
 
     }

@@ -54,16 +54,24 @@ public class PagarTarjetaService implements IPagarService
             String numeroTarjeta = numeroResult.get();
 
             // Diálogo para solicitar la fecha de vencimiento
-            TextInputDialog fechaDialog = new TextInputDialog();
-            fechaDialog.setTitle("Datos de Tarjeta de Crédito");
-            fechaDialog.setHeaderText("Ingrese la fecha de vencimiento (MM/AAAA):");
-            fechaDialog.setContentText("Fecha de vencimiento:");
+            TextInputDialog fechaMDialog = new TextInputDialog();
+            fechaMDialog.setTitle("Datos de Tarjeta de Crédito");
+            fechaMDialog.setHeaderText("Ingrese el mes de vencimiento (MM):");
+            fechaMDialog.setContentText("Mes de vencimiento:");
 
             // Obtener la fecha de vencimiento
-            Optional<String> fechaResult = fechaDialog.showAndWait();
-            if (fechaResult.isPresent())
+            Optional<String> fechaResultM = fechaMDialog.showAndWait();
+
+            TextInputDialog fechaADialog = new TextInputDialog();
+            fechaADialog.setTitle("Datos de Tarjeta de Crédito");
+            fechaADialog.setHeaderText("Ingrese el año de vencimiento (AAAA):");
+            fechaADialog.setContentText("Año de vencimiento:");
+
+            // Obtener la fecha de vencimiento
+            Optional<String> fechaResultA = fechaADialog.showAndWait();
+            if (fechaResultM.isPresent() && fechaResultA.isPresent())
             {
-                String mesAnioVencimiento = fechaResult.get();
+                String mesAnioVencimiento = fechaResultM.get()+"/"+fechaResultA.get();
 
                 // Validar que la fecha de vencimiento esté en el formato MM/AAAA
                 if (!mesAnioVencimiento.matches("\\d{2}/\\d{4}"))

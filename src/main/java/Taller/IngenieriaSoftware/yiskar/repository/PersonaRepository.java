@@ -1,14 +1,16 @@
 package Taller.IngenieriaSoftware.yiskar.repository;
 
 import Taller.IngenieriaSoftware.yiskar.entities.Cliente;
+import Taller.IngenieriaSoftware.yiskar.entities.ClienteAutenticado;
 import Taller.IngenieriaSoftware.yiskar.entities.JefeLocal;
 import Taller.IngenieriaSoftware.yiskar.entities.Persona;
+import Taller.IngenieriaSoftware.yiskar.interfaces.IObserver;
 import Taller.IngenieriaSoftware.yiskar.util.AlertBox;
 import javafx.scene.control.Alert;
 
 import java.io.*;
 
-public class PersonaRepository {
+public class PersonaRepository implements IObserver {
     /**
      * Direccion del archivo "CLiente.txt" que contiene la información de los clientes.
      */
@@ -59,7 +61,7 @@ public class PersonaRepository {
 
         try (BufferedReader reader = new BufferedReader(new FileReader(System.getProperty("user.dir") + clientesDir))){
             {
-                String line, nombre, edad, correo, contrasenia;
+                String line, nombre, edad, correo, contrasenia, puntos;
                 int i = 0;
                 while ((line = reader.readLine()) != null) {
                     String[] datos = line.split(",");
@@ -67,7 +69,8 @@ public class PersonaRepository {
                     edad = datos[1];
                     correo = datos[2];
                     contrasenia = datos[3];
-                    Cliente cliente = new Cliente(nombre,Integer.parseInt(edad),correo, contrasenia, 0);
+                    puntos = datos[4];
+                    Cliente cliente = new Cliente(nombre,Integer.parseInt(edad),correo, contrasenia, Integer.parseInt(puntos));
                     clientes[i] = cliente;
                     i++;
                     cantidadClientes++;
@@ -159,6 +162,8 @@ public class PersonaRepository {
         {
             if(personaRepository.clientes[i].getEmail().equals(correo) && personaRepository.clientes[i].getContrasenia().equals(contrasenia))
             {
+                ClienteAutenticado clienteAutenticado = ClienteAutenticado.getInstancia();
+                clienteAutenticado.setCliente(personaRepository.clientes[i]);
                 return "Cliente";
             }
         }
@@ -206,5 +211,55 @@ public class PersonaRepository {
             expandirEspacio(true);
         }
         return true;
+    }
+
+    @Override
+    public void actualizarPuntos(int puntos)
+    {
+        ClienteAutenticado clienteAutenticado = ClienteAutenticado.getInstancia();
+        String correo = clienteAutenticado.obtenerCorreo();
+
+        for(Persona cliente:clientes)
+        {
+            if(cliente.getEmail().equals(correo))
+            {
+                ((Cliente) cliente).setPuntos(puntos);
+                actualizarPuntosTXT(puntos,correo);
+                return;
+            }
+        }
+    }
+
+    private void actualizarPuntosTXT(int puntos, String correo){
+        String rutaArchivo = System.getProperty("user.dir") + clientesDir;
+        StringBuilder contenido = new StringBuilder();
+        String lineaAReemplazar = "Línea a reemplazar";
+        String nuevaLinea = "Esta es la nueva línea.";
+
+        // Leer el contenido del archivo
+        try (BufferedReader br = new BufferedReader(new FileReader(rutaArchivo))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                String[] datos = linea.split(",");
+                if(datos[2].equals(correo))
+                {
+                    lineaAReemplazar = linea;
+                    String[] datosAux = lineaAReemplazar.split(",");
+                    nuevaLinea = datosAux[0]+","+datosAux[1]+","+datosAux[2]+","+datosAux[3]+","+puntos;
+                    contenido.append(nuevaLinea).append(System.lineSeparator());
+                } else {
+                    contenido.append(linea).append(System.lineSeparator());
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Escribir el contenido modificado de nuevo en el archivo
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(rutaArchivo))) {
+            bw.write(contenido.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

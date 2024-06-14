@@ -12,7 +12,7 @@
             </padding></Label>
       <Label layoutX="35.0" layoutY="144.0" stylesheets="@../styles/stylesComprarGiftCard.css" text="Servicios Disponibles" />
       <Label layoutX="678.0" layoutY="144.0" stylesheets="@../styles/stylesComprarGiftCard.css" text="Servicios Agregados" />
-      <Label fx:id="puntosTxt" layoutX="16.0" layoutY="14.0" prefHeight="28.0" prefWidth="341.0" stylesheets="@../styles/stylesComprarGiftCard.css" text="Puntos disponibles: " />
+      <Label fx:id="puntosTxt" layoutX="16.0" layoutY="14.0" prefHeight="28.0" prefWidth="578.0" stylesheets="@../styles/stylesComprarGiftCard.css" text="Puntos disponibles: " />
         <TableView fx:id="tablaServiciosDisp" layoutX="36.0" layoutY="200.0" prefHeight="350.0" prefWidth="300.0" stylesheets="@../styles/stylesComprarGiftCard.css" AnchorPane.bottomAnchor="50.0" AnchorPane.rightAnchor="664.0" AnchorPane.topAnchor="200.0">
             <columns>
                 <TableColumn fx:id="colNombreDisp" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" text="Nombre" />
