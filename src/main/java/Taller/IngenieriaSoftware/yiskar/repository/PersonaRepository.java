@@ -192,7 +192,7 @@ public class PersonaRepository implements IObserver {
             AlertBox.mostrarError("El correo electrónico ingresado ya existe en el sistema","Error", Alert.AlertType.ERROR);
             return false;
         }
-        for(int i=0;i<cantidadClientes;i++)
+        for(int i=0;i<cantidadJefes;i++)
         {
             if(jefes[i].getEmail().equals(correo))
             {

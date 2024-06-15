@@ -136,7 +136,10 @@ public class administrarServiciosController {
                     AlertBox.mostrarError("El nombre del servicio no puede estar vacío.", "Error al modificar servicio.", Alert.AlertType.ERROR);
                     return;
                 }
-
+                if(!AlertBox.pedirConfirmacion())
+                {
+                    return;
+                }
                 ServiciosRepository serviciosRepository = ServiciosRepository.getInstancia();
                 if (serviciosRepository.editarNombre(servicioSeleccionado.getNombre(), nombre))
                 {
@@ -189,7 +192,10 @@ public class administrarServiciosController {
                     AlertBox.mostrarError("El precio debe ser numérico","Error al modificar servicio", Alert.AlertType.ERROR);
                     return;
                 }
-
+                if(!AlertBox.pedirConfirmacion())
+                {
+                    return;
+                }
                 ServiciosRepository serviciosRepository = ServiciosRepository.getInstancia();
                 if (serviciosRepository.editarPrecio(servicioSeleccionado.getNombre(), precioNuevo))
                 {
@@ -221,7 +227,8 @@ public class administrarServiciosController {
             confirmacion.setContentText("Esta acción no se puede deshacer.");
 
             Optional<ButtonType> resultado = confirmacion.showAndWait();
-            if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
+            if (resultado.isPresent() && resultado.get() == ButtonType.OK)
+            {
                 ServiciosRepository serviciosRepository = ServiciosRepository.getInstancia();
                 if(serviciosRepository.eliminarServicio(servicioSeleccionado.getNombre()))
                 {

@@ -123,7 +123,16 @@ public class registroController {
             mostrarError("Las contraseñas ingresadas no coinciden.");
             return;
         }
-
+        if(!AlertBox.pedirConfirmacion())
+        {
+            nombreTextField.clear();
+            edadTextField.clear();
+            emailTextField.clear();
+            PasswordField.clear();
+            RepeatPasswordField.clear();
+            errorTexto.setText("");
+            return;
+        }
         PersonaRepository personaRepository = PersonaRepository.getInstance();
         if(personaRepository.registrarCliente(nombreTextField.getText(),edadTextField.getText(),emailTextField.getText(),PasswordField.getText()))
         {
