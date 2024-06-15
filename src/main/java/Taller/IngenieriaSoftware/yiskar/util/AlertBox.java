@@ -2,6 +2,8 @@ package Taller.IngenieriaSoftware.yiskar.util;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
+import javafx.scene.paint.Color;
 
 import java.util.Optional;
 
@@ -19,6 +21,10 @@ public class AlertBox {
         alert.setTitle(titulo);
         alert.setHeaderText(null);
         alert.setContentText(mensaje);
+
+        Label label = (Label) alert.getDialogPane().lookup(".content.label");
+        label.setTextFill(Color.web("#F56558"));
+
         alert.showAndWait();
     }
 

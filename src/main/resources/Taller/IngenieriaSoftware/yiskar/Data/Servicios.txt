@@ -1,4 +1,4 @@
-Lavado Completo,3500
+Lavado Completo,3000
 Pulido de Carrocería,4500
 Descontaminación de Pintura,5000
 Limpieza Interior a Fondo,3800
