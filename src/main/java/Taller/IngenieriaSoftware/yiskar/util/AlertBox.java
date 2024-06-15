@@ -22,8 +22,11 @@ public class AlertBox {
         alert.setHeaderText(null);
         alert.setContentText(mensaje);
 
-        Label label = (Label) alert.getDialogPane().lookup(".content.label");
-        label.setTextFill(Color.web("#F56558"));
+        if(tipoAlerta.equals(Alert.AlertType.ERROR))
+        {
+            Label label = (Label) alert.getDialogPane().lookup(".content.label");
+            label.setTextFill(Color.web("#F56558"));
+        }
 
         alert.showAndWait();
     }
