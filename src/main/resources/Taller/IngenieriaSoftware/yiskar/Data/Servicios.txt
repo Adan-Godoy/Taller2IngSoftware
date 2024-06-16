@@ -4,6 +4,6 @@ Descontaminación de Pintura,5000
 Limpieza Interior a Fondo,3800
 Lavado de Motor,3200
 Tratamiento de Asientos de Cuero,3600
-Lavado de Alfombras,3100
+Lavado de alfombras,3500
 Lavado de llantas,8000
 Encerado,8000

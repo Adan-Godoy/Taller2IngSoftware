@@ -12,3 +12,4 @@ Juanito perez,33,juanito@gmail.com,colocolo,100000
 juan,33,juanbkn@example.com,lalala,56566
 Pedro Pascal,44,Pedro@gmail.com,pedrito3112,0
 ejemplo,55,a,a,458000
+Prueba,50,pruebaTest@gmail.com,prueba,0
